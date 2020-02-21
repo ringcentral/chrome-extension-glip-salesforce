@@ -6,5 +6,11 @@
   "browser_action": {
     "default_popup": "index.html",
     "default_icon": "icon.png"
-  }
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://*.github.com/*"],
+      "js": ["content.js"]
+    }
+  ]
 }
