@@ -9,7 +9,7 @@
   },
   "content_scripts": [
     {
-      "matches": ["https://*.github.com/*"],
+      "matches": ["https://*.salesforce.com/5*"],
       "js": ["content.js"]
     }
   ]
