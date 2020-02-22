@@ -1,6 +1,6 @@
 {
   "name": "Glip Salesforce",
-  "description" : "Link Salesforce cases to Glip teams",
+  "description": "Link Salesforce cases to Glip teams",
   "version": "1.0",
   "manifest_version": 2,
   "content_scripts": [
@@ -8,5 +8,10 @@
       "matches": ["https://*.salesforce.com/5*"],
       "js": ["content.js"]
     }
-  ]
+  ],
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
 }
