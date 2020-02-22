@@ -3,10 +3,6 @@
   "description" : "Link Salesforce cases to Glip teams",
   "version": "1.0",
   "manifest_version": 2,
-  "browser_action": {
-    "default_popup": "index.html",
-    "default_icon": "icon.png"
-  },
   "content_scripts": [
     {
       "matches": ["https://*.salesforce.com/5*"],
