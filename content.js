@@ -1,1 +1,1 @@
-console.log('hello Glip Salesforce Chrome extension')
+console.log(document.getElementsByTagName('title')[0].textContent)
