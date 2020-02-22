@@ -1,22 +1,16 @@
 /* global chrome  */
 const sectionHeader = document.getElementById('section_header')
-var textNode = document.createTextNode('This is my caption.')
-sectionHeader.parentNode.insertBefore(textNode, sectionHeader)
+const containerNode = document.createElement('div')
+containerNode.style.cssText = 'float: right;'
+sectionHeader.parentNode.insertBefore(containerNode, sectionHeader)
 
-chrome.storage.sync.set({ temp: 'hello' }, () => {
+chrome.storage.sync.get('RingCentralToken', dict => {
+  if (!dict.RingCentralToken) {
+    containerNode.innerText = 'No RC token'
+  } else {
+    containerNode.innerText = 'Has RC token'
+  }
 })
 
-chrome.storage.sync.get('temp', dict => {
-  console.log('before')
-  console.log(dict)
-  console.log('after')
-})
-
-chrome.storage.sync.clear(() => {
-})
-
-chrome.storage.sync.get('temp', dict => {
-  console.log('before')
-  console.log(dict)
-  console.log('after')
+chrome.storage.sync.set({ RingCentralToken: 'world' }, () => {
 })
