@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+  <head></head>
+  <body>
+    <script>
+      const urlSearchParams = new URLSearchParams(window.location.href.split('?')[1])
+      console.log('Case ID:', urlSearchParams.get('caseId'))
+      console.log('Account name:', urlSearchParams.get('accountName'))
+      console.log('Subject:', urlSearchParams.get('subject'))
+    </script>
+  </body>
+</html>
