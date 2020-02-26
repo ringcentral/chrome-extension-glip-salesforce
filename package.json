@@ -6,7 +6,8 @@
   },
   "dependencies": {
     "js-cookie": "^2.2.1",
-    "ramda": "^0.27.0"
+    "ramda": "^0.27.0",
+    "ringcentral-js-concise": "^0.7.8"
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",

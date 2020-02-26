@@ -1,5 +1,6 @@
 import Cookies from 'js-cookie'
 import * as R from 'ramda'
+import RingCentral from 'ringcentral-js-concise'
 
 const urlSearchParams = new URLSearchParams(new URL(window.location.href).search)
 const caseId = urlSearchParams.get('caseId')
@@ -11,14 +12,17 @@ console.log('Account name:', accountName)
 console.log('Subject:', subject)
 console.log('Code:', code)
 
+const rc = new RingCentral('iGSkeZuCSmOwA6YdZvdNIw', '9hSGC8uxTXSWgP5yE4s26Q5qe3DBH_SRiKmoezK9tUQg', RingCentral.PRODUCTION_SERVER)
+
 if (code) {
   // exchange code for token, save it into cookie
 }
 
 const token = Cookies.getJSON('ringcentral-token')
 if (R.isNil(token)) {
+  const authorizeUri = rc.authorizeUri('http://localhost:8080')
   const div = document.createElement('div')
-  div.innerHTML = '<a href="">Login Glip</a>'
+  div.innerHTML = `<a href="${authorizeUri}">Login Glip</a>`
   document.body.appendChild(div)
 } else {
   const div = document.createElement('div')
