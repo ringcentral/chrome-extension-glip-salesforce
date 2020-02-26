@@ -1,9 +1,9 @@
-import Cookies from 'js-cookie'
 import * as R from 'ramda'
 import RingCentral from 'ringcentral-js-concise'
+import localforage from 'localforage'
 
-// const redirectUri = 'http://localhost:8080'
-const redirectUri = 'https://chuntaoliu.com/chrome-extension-glip-salesforce'
+const redirectUri = 'http://localhost:8080'
+// const redirectUri = 'https://chuntaoliu.com/chrome-extension-glip-salesforce'
 
 const urlSearchParams = new URLSearchParams(new URL(window.location.href).search)
 const caseId = urlSearchParams.get('caseId')
@@ -20,9 +20,9 @@ const rc = new RingCentral(process.env.RINGCENTRAL_CLIENT_ID, process.env.RINGCE
 ;(async () => {
   if (code) {
     await rc.authorize({ code, redirectUri })
-    Cookies.set('ringcentral-token', rc.token(), { expires: 365 })
+    await localforage.setItem('ringcentral-token', rc.token())
   }
-  const token = Cookies.getJSON('ringcentral-token')
+  const token = await localforage.getItem('ringcentral-token')
   if (R.isNil(token)) {
     const authorizeUri = rc.authorizeUri(redirectUri)
     const div = document.createElement('div')
@@ -34,7 +34,7 @@ const rc = new RingCentral(process.env.RINGCENTRAL_CLIENT_ID, process.env.RINGCE
       await rc.get('/restapi/v1.0/account/~/extension/~')
     } catch (e) {
       if (e.response && (e.response.data.errors || []).some(error => /\btoken\b/i.test(error.message))) { // invalid token
-        Cookies.remove('ringcentral-token')
+        await localforage.removeItem('ringcentral-token')
         window.location.reload(false)
       }
     }
