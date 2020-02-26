@@ -1,0 +1,7 @@
+const urlSearchParams = new URLSearchParams(new URL(window.location.href).search)
+const caseId = urlSearchParams.get('caseId')
+const accountName = urlSearchParams.get('accountName')
+const subject = urlSearchParams.get('subject')
+console.log('Case ID:', caseId)
+console.log('Account name:', accountName)
+console.log('Subject:', subject)
