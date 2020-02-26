@@ -38,6 +38,8 @@ const rc = new RingCentral(process.env.RINGCENTRAL_CLIENT_ID, process.env.RINGCE
         window.location.reload(false)
       }
     }
+    const r = await rc.get('/restapi/v1.0/glip/teams', { params: { recordCount: 250 } })
+    console.log(r.data)
     const div = document.createElement('div')
     div.innerHTML = '<span>You have logged into Glip</span>'
     document.body.appendChild(div)
