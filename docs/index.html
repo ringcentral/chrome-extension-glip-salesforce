@@ -3,7 +3,7 @@
   <head></head>
   <body>
     <script>
-      const urlSearchParams = new URLSearchParams(window.location.href.split('?')[1])
+      const urlSearchParams = new URLSearchParams(new URL(window.location.href).search)
       console.log('Case ID:', urlSearchParams.get('caseId'))
       console.log('Account name:', urlSearchParams.get('accountName'))
       console.log('Subject:', urlSearchParams.get('subject'))
