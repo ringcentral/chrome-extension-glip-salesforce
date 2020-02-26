@@ -27227,8 +27227,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const redirectUri = 'http://localhost:8080'; // const redirectUri = 'https://chuntaoliu.com/chrome-extension-glip-salesforce'
-
+const redirectUri = window.location.origin + window.location.pathname;
 const urlSearchParams = new URLSearchParams(new URL(window.location.href).search);
 const caseId = urlSearchParams.get('caseId');
 const accountName = urlSearchParams.get('accountName');
