@@ -7,10 +7,11 @@ sectionHeader.parentNode.insertBefore(containerNode, sectionHeader)
 chrome.storage.sync.get('RingCentralToken', dict => {
   if (!dict.RingCentralToken) {
     containerNode.innerText = 'No RC token'
+    chrome.storage.sync.set({ RingCentralToken: 'world' }, () => {
+    })
   } else {
     containerNode.innerText = 'Has RC token'
+    chrome.storage.sync.clear(() => {
+    })
   }
-})
-
-chrome.storage.sync.set({ RingCentralToken: 'world' }, () => {
 })
