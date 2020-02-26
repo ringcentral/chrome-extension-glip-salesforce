@@ -12,7 +12,7 @@ console.log('Account name:', accountName)
 console.log('Subject:', subject)
 console.log('Code:', code)
 
-const rc = new RingCentral('iGSkeZuCSmOwA6YdZvdNIw', '9hSGC8uxTXSWgP5yE4s26Q5qe3DBH_SRiKmoezK9tUQg', RingCentral.PRODUCTION_SERVER)
+const rc = new RingCentral(process.env.RINGCENTRAL_CLIENT_ID, process.env.RINGCENTRAL_CLIENT_SECRET, RingCentral.PRODUCTION_SERVER)
 
 if (code) {
   // exchange code for token, save it into cookie
