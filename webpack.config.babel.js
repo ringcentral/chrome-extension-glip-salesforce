@@ -18,7 +18,7 @@ const config = {
     ]
   },
   plugins: [
-    new HtmlWebpackPlugin()
+    new HtmlWebpackPlugin({ title: 'Salesforce to Glip Router' })
   ]
 }
 
