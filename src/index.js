@@ -29,22 +29,6 @@ ReactDOM.render(<App store={store} />, container)
 // }
 
 // ;(async () => {
-//   const token = await localforage.getItem('ringcentral-token')
-//   if (R.isNil(token)) {
-//     const authorizeUri = rc.authorizeUri(redirectUri)
-//     const div = document.createElement('div')
-//     div.innerHTML = `<a href="${authorizeUri}">Login Glip</a>`
-//     document.body.appendChild(div)
-//   } else {
-//     rc.token(token)
-//     try {
-//       await rc.get('/restapi/v1.0/account/~/extension/~')
-//     } catch (e) {
-//       if (e.data && (e.data.errors || []).some(error => /\btoken\b/i.test(error.message))) { // invalid token
-//         await localforage.clear()
-//         window.location.reload(false)
-//       }
-//     }
 //     const prevPageToken = await localforage.getItem('prevPageToken')
 //     let r = await rc.get('/restapi/v1.0/glip/teams', { params: { recordCount: 250, pageToken: prevPageToken } })
 //     console.log(r.data)
