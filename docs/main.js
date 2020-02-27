@@ -27268,9 +27268,6 @@ const saveTeams = async newTeams => {
     div.innerHTML = `<a href="${authorizeUri}">Login Glip</a>`;
     document.body.appendChild(div);
   } else {
-    const div = document.createElement('div');
-    div.innerHTML = '<span>You have logged into Glip</span>';
-    document.body.appendChild(div);
     rc.token(token);
 
     try {
@@ -27310,7 +27307,7 @@ const saveTeams = async newTeams => {
     const existingTeams = [];
 
     if (!ramda__WEBPACK_IMPORTED_MODULE_0__["isNil"](keyword)) {
-      const regex = new RegExp(`\\b${keyword}\\b`);
+      const regex = new RegExp(`\\b${keyword}\\b`, 'i');
 
       for (const key of Object.keys(teams)) {
         if (regex.test(teams[key].name)) {
@@ -27324,9 +27321,13 @@ const saveTeams = async newTeams => {
 
     if (existingTeams.length > 0) {
       const div = document.createElement('div');
-      div.innerHTML = `<span>We have found the following Glip teams:<ul>${existingTeams.map(t => `<li>${t.name}</li>`).join('')}</ul></span>`;
+      div.innerHTML = `<span>We have found the following Glip teams:<ul>${existingTeams.map(t => `<li>${t.name} [<a href=" https://app.glip.com/chat/r?groupid=${t.id}">Open in Glip</a>] [<a href="https://jupiter.fiji.gliprc.com/messages/${t.id}">Open in Jupiter</a>]</li>`).join('')}</ul></span>`;
       document.body.appendChild(div);
-    } else {}
+    } else {
+      const div = document.createElement('div');
+      div.innerHTML = '<span>We didn\'t find the team you requested. <a href="">Create a new team</a></span>';
+      document.body.appendChild(div);
+    }
   }
 
   spinnerDiv.remove();
