@@ -27239,6 +27239,16 @@ console.log('Subject:', subject);
 console.log('Code:', code);
 const rc = new ringcentral_js_concise__WEBPACK_IMPORTED_MODULE_1__["default"]({"RINGCENTRAL_CLIENT_ID":"iGSkeZuCSmOwA6YdZvdNIw","RINGCENTRAL_CLIENT_SECRET":"9hSGC8uxTXSWgP5yE4s26Q5qe3DBH_SRiKmoezK9tUQg"}.RINGCENTRAL_CLIENT_ID, {"RINGCENTRAL_CLIENT_ID":"iGSkeZuCSmOwA6YdZvdNIw","RINGCENTRAL_CLIENT_SECRET":"9hSGC8uxTXSWgP5yE4s26Q5qe3DBH_SRiKmoezK9tUQg"}.RINGCENTRAL_CLIENT_SECRET, ringcentral_js_concise__WEBPACK_IMPORTED_MODULE_1__["default"].PRODUCTION_SERVER);
 
+const saveTeams = async newTeams => {
+  const teams = (await localforage__WEBPACK_IMPORTED_MODULE_2___default.a.getItem('teams')) || {};
+
+  for (const team of newTeams) {
+    teams[team.id] = team;
+  }
+
+  await localforage__WEBPACK_IMPORTED_MODULE_2___default.a.setItem('teams', teams);
+};
+
 (async () => {
   if (code) {
     await rc.authorize({
@@ -27256,6 +27266,9 @@ const rc = new ringcentral_js_concise__WEBPACK_IMPORTED_MODULE_1__["default"]({"
     div.innerHTML = `<a href="${authorizeUri}">Login Glip</a>`;
     document.body.appendChild(div);
   } else {
+    const div = document.createElement('div');
+    div.innerHTML = '<span>You have logged into Glip</span>';
+    document.body.appendChild(div);
     rc.token(token);
 
     try {
@@ -27263,20 +27276,46 @@ const rc = new ringcentral_js_concise__WEBPACK_IMPORTED_MODULE_1__["default"]({"
     } catch (e) {
       if (e.response && (e.response.data.errors || []).some(error => /\btoken\b/i.test(error.message))) {
         // invalid token
-        await localforage__WEBPACK_IMPORTED_MODULE_2___default.a.removeItem('ringcentral-token');
+        await localforage__WEBPACK_IMPORTED_MODULE_2___default.a.clear();
         window.location.reload(false);
       }
     }
 
-    const r = await rc.get('/restapi/v1.0/glip/teams', {
+    const prevPageToken = await localforage__WEBPACK_IMPORTED_MODULE_2___default.a.getItem('prevPageToken');
+    let r = await rc.get('/restapi/v1.0/glip/teams', {
       params: {
-        recordCount: 250
+        recordCount: 250,
+        pageToken: prevPageToken
       }
     });
     console.log(r.data);
-    const div = document.createElement('div');
-    div.innerHTML = '<span>You have logged into Glip</span>';
-    document.body.appendChild(div);
+    await saveTeams(r.data.records);
+
+    while (r.data.navigation.prevPageToken) {
+      await localforage__WEBPACK_IMPORTED_MODULE_2___default.a.setItem('prevPageToken', r.data.navigation.prevPageToken);
+      r = await rc.get('/restapi/v1.0/glip/teams', {
+        params: {
+          recordCount: 250,
+          pageToken: r.data.navigation.prevPageToken
+        }
+      });
+      console.log(r.data);
+      await saveTeams(r.data.records);
+    }
+
+    const teams = await localforage__WEBPACK_IMPORTED_MODULE_2___default.a.getItem('teams');
+    console.log(teams);
+    const regex = new RegExp(`\\b${caseId}\\b`);
+    const existingTeams = [];
+
+    for (const key of Object.keys(teams)) {
+      if (regex.test(teams[key].name)) {
+        console.log(teams[key]);
+        existingTeams.push(teams[key]);
+      }
+    }
+
+    console.log(existingTeams);
   }
 })();
 
