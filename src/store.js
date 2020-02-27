@@ -8,13 +8,14 @@ const rc = new RingCentral(process.env.RINGCENTRAL_CLIENT_ID, process.env.RINGCE
 const store = SubX.create({
   ready: false,
   token: undefined,
+  authorizeUri: rc.authorizeUri(redirectUri),
   async init () {
     const urlSearchParams = new URLSearchParams(new URL(window.location.href).search)
     const code = urlSearchParams.get('code')
     if (code) {
       await rc.authorize({ code, redirectUri })
       this.token = rc.token()
-      await localforage.setItem('ringcentral-token', store.token)
+      await localforage.setItem('ringcentral-token', this.token.toJSON())
     }
   },
   async load () {
