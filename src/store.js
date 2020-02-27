@@ -10,16 +10,31 @@ const store = SubX.create({
   token: undefined,
   authorizeUri: rc.authorizeUri(redirectUri),
   async init () {
+    rc.on('tokenChanged', token => {
+      this.token = token
+    })
     const urlSearchParams = new URLSearchParams(new URL(window.location.href).search)
     const code = urlSearchParams.get('code')
     if (code) {
       await rc.authorize({ code, redirectUri })
-      this.token = rc.token()
-      await localforage.setItem('ringcentral-token', this.token.toJSON())
     }
   },
   async load () {
-    this.token = await localforage.getItem('ringcentral-token')
+    rc.token(await localforage.getItem('ringcentral-token'))
+    try { // make sure token is still usable
+      await rc.get('/restapi/v1.0/account/~/extension/~')
+    } catch (e) {
+      if (e.data && (e.data.errors || []).some(error => /\btoken\b/i.test(error.message))) { // invalid token
+        await localforage.clear()
+        window.location.reload(false)
+      }
+    }
+  }
+})
+
+SubX.autoRun(store, async () => {
+  if (store.token) {
+    await localforage.setItem('ringcentral-token', store.token.toJSON())
   }
 })
 
