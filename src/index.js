@@ -9,6 +9,10 @@ document.body.appendChild(container)
 
 ReactDOM.render(<Main store={store} />, container)
 
+;(async () => {
+  await store.load()
+})()
+
 // import * as R from 'ramda'
 // import RingCentral from 'ringcentral-js-concise'
 // import localforage from 'localforage'
