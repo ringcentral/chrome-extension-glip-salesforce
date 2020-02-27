@@ -1,33 +1,24 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-import Main from './main'
+import App from './main'
 import store from './store'
 
 const container = document.createElement('div')
 document.body.appendChild(container)
-
-ReactDOM.render(<Main store={store} />, container)
+ReactDOM.render(<App store={store} />, container)
 
 ;(async () => {
+  await store.init()
   await store.load()
+  store.ready = true
 })()
-
-// import * as R from 'ramda'
-// import RingCentral from 'ringcentral-js-concise'
-// import localforage from 'localforage'
-
-// const redirectUri = window.location.origin + window.location.pathname
 
 // const urlSearchParams = new URLSearchParams(new URL(window.location.href).search)
 // const keyword = urlSearchParams.get('keyword')
-// const teamName = urlSearchParams.get('accountName')
-// const code = urlSearchParams.get('code')
+// const teamName = urlSearchParams.get('teamName')
 // console.log('Keyword:', keyword)
 // console.log('Team name:', teamName)
-// console.log('Code:', code)
-
-// const rc = new RingCentral(process.env.RINGCENTRAL_CLIENT_ID, process.env.RINGCENTRAL_CLIENT_SECRET, RingCentral.PRODUCTION_SERVER)
 
 // const saveTeams = async newTeams => {
 //   const teams = await localforage.getItem('teams') || {}
@@ -38,13 +29,6 @@ ReactDOM.render(<Main store={store} />, container)
 // }
 
 // ;(async () => {
-//   const spinnerDiv = document.createElement('div')
-//   spinnerDiv.innerHTML = '<img src="https://chuntaoliu.com/chrome-extension-glip-salesforce/spinner.gif"/>'
-//   document.body.appendChild(spinnerDiv)
-//   if (code) {
-//     await rc.authorize({ code, redirectUri })
-//     await localforage.setItem('ringcentral-token', rc.token())
-//   }
 //   const token = await localforage.getItem('ringcentral-token')
 //   if (R.isNil(token)) {
 //     const authorizeUri = rc.authorizeUri(redirectUri)
@@ -94,5 +78,4 @@ ReactDOM.render(<Main store={store} />, container)
 //       document.body.appendChild(div)
 //     }
 //   }
-//   spinnerDiv.remove()
 // })()
