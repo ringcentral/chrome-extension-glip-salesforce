@@ -5,13 +5,11 @@ import localforage from 'localforage'
 const redirectUri = window.location.origin + window.location.pathname
 
 const urlSearchParams = new URLSearchParams(new URL(window.location.href).search)
-const caseId = urlSearchParams.get('caseId')
-const accountName = urlSearchParams.get('accountName')
-const subject = urlSearchParams.get('subject')
+const keyword = urlSearchParams.get('keyword')
+const teamName = urlSearchParams.get('accountName')
 const code = urlSearchParams.get('code')
-console.log('Case ID:', caseId)
-console.log('Account name:', accountName)
-console.log('Subject:', subject)
+console.log('Keyword:', keyword)
+console.log('Team name:', teamName)
 console.log('Code:', code)
 
 const rc = new RingCentral(process.env.RINGCENTRAL_CLIENT_ID, process.env.RINGCENTRAL_CLIENT_SECRET, RingCentral.PRODUCTION_SERVER)
@@ -25,6 +23,9 @@ const saveTeams = async newTeams => {
 }
 
 ;(async () => {
+  const spinnerDiv = document.createElement('div')
+  spinnerDiv.innerHTML = '<img src="https://chuntaoliu.com/chrome-extension-glip-salesforce/spinner.gif"/>'
+  document.body.appendChild(spinnerDiv)
   if (code) {
     await rc.authorize({ code, redirectUri })
     await localforage.setItem('ringcentral-token', rc.token())
@@ -62,8 +63,8 @@ const saveTeams = async newTeams => {
     const teams = await localforage.getItem('teams')
     console.log(teams)
     const existingTeams = []
-    if (!R.isNil(caseId)) {
-      const regex = new RegExp(`\\b${caseId}\\b`)
+    if (!R.isNil(keyword)) {
+      const regex = new RegExp(`\\b${keyword}\\b`)
       for (const key of Object.keys(teams)) {
         if (regex.test(teams[key].name)) {
           console.log(teams[key])
@@ -80,4 +81,5 @@ const saveTeams = async newTeams => {
 
     }
   }
+  spinnerDiv.remove()
 })()

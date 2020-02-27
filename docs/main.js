@@ -27229,13 +27229,11 @@ __webpack_require__.r(__webpack_exports__);
 
 const redirectUri = window.location.origin + window.location.pathname;
 const urlSearchParams = new URLSearchParams(new URL(window.location.href).search);
-const caseId = urlSearchParams.get('caseId');
-const accountName = urlSearchParams.get('accountName');
-const subject = urlSearchParams.get('subject');
+const keyword = urlSearchParams.get('keyword');
+const teamName = urlSearchParams.get('accountName');
 const code = urlSearchParams.get('code');
-console.log('Case ID:', caseId);
-console.log('Account name:', accountName);
-console.log('Subject:', subject);
+console.log('Keyword:', keyword);
+console.log('Team name:', teamName);
 console.log('Code:', code);
 const rc = new ringcentral_js_concise__WEBPACK_IMPORTED_MODULE_1__["default"]({"RINGCENTRAL_CLIENT_ID":"iGSkeZuCSmOwA6YdZvdNIw","RINGCENTRAL_CLIENT_SECRET":"9hSGC8uxTXSWgP5yE4s26Q5qe3DBH_SRiKmoezK9tUQg"}.RINGCENTRAL_CLIENT_ID, {"RINGCENTRAL_CLIENT_ID":"iGSkeZuCSmOwA6YdZvdNIw","RINGCENTRAL_CLIENT_SECRET":"9hSGC8uxTXSWgP5yE4s26Q5qe3DBH_SRiKmoezK9tUQg"}.RINGCENTRAL_CLIENT_SECRET, ringcentral_js_concise__WEBPACK_IMPORTED_MODULE_1__["default"].PRODUCTION_SERVER);
 
@@ -27250,6 +27248,10 @@ const saveTeams = async newTeams => {
 };
 
 (async () => {
+  const spinnerDiv = document.createElement('div');
+  spinnerDiv.innerHTML = '<img src="https://chuntaoliu.com/chrome-extension-glip-salesforce/spinner.gif"/>';
+  document.body.appendChild(spinnerDiv);
+
   if (code) {
     await rc.authorize({
       code,
@@ -27274,7 +27276,7 @@ const saveTeams = async newTeams => {
     try {
       await rc.get('/restapi/v1.0/account/~/extension/~');
     } catch (e) {
-      if (e.response && (e.response.data.errors || []).some(error => /\btoken\b/i.test(error.message))) {
+      if (e.data && (e.data.errors || []).some(error => /\btoken\b/i.test(error.message))) {
         // invalid token
         await localforage__WEBPACK_IMPORTED_MODULE_2___default.a.clear();
         window.location.reload(false);
@@ -27305,18 +27307,29 @@ const saveTeams = async newTeams => {
 
     const teams = await localforage__WEBPACK_IMPORTED_MODULE_2___default.a.getItem('teams');
     console.log(teams);
-    const regex = new RegExp(`\\b${caseId}\\b`);
     const existingTeams = [];
 
-    for (const key of Object.keys(teams)) {
-      if (regex.test(teams[key].name)) {
-        console.log(teams[key]);
-        existingTeams.push(teams[key]);
+    if (!ramda__WEBPACK_IMPORTED_MODULE_0__["isNil"](keyword)) {
+      const regex = new RegExp(`\\b${keyword}\\b`);
+
+      for (const key of Object.keys(teams)) {
+        if (regex.test(teams[key].name)) {
+          console.log(teams[key]);
+          existingTeams.push(teams[key]);
+        }
       }
     }
 
     console.log(existingTeams);
+
+    if (existingTeams.length > 0) {
+      const div = document.createElement('div');
+      div.innerHTML = `<span>We have found the following Glip teams:<ul>${existingTeams.map(t => `<li>${t.name}</li>`).join('')}</ul></span>`;
+      document.body.appendChild(div);
+    } else {}
   }
+
+  spinnerDiv.remove();
 })();
 
 /***/ })
