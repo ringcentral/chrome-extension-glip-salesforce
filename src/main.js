@@ -1,11 +1,12 @@
 import React from 'react'
 import { Component } from 'react-subx'
 import * as R from 'ramda'
+import { Spin } from 'antd'
 
 class App extends Component {
   render () {
     const store = this.props.store
-    return store.ready ? <Main store={store} /> : <img src='https://chuntaoliu.com/chrome-extension-glip-salesforce/spinner.gif' />
+    return store.ready ? <Main store={store} /> : <Spin size='large' />
   }
 }
 
