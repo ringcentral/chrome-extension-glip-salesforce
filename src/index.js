@@ -16,6 +16,14 @@ console.log('Code:', code)
 
 const rc = new RingCentral(process.env.RINGCENTRAL_CLIENT_ID, process.env.RINGCENTRAL_CLIENT_SECRET, RingCentral.PRODUCTION_SERVER)
 
+const saveTeams = async newTeams => {
+  const teams = await localforage.getItem('teams') || {}
+  for (const team of newTeams) {
+    teams[team.id] = team
+  }
+  await localforage.setItem('teams', teams)
+}
+
 ;(async () => {
   if (code) {
     await rc.authorize({ code, redirectUri })
@@ -28,19 +36,39 @@ const rc = new RingCentral(process.env.RINGCENTRAL_CLIENT_ID, process.env.RINGCE
     div.innerHTML = `<a href="${authorizeUri}">Login Glip</a>`
     document.body.appendChild(div)
   } else {
+    const div = document.createElement('div')
+    div.innerHTML = '<span>You have logged into Glip</span>'
+    document.body.appendChild(div)
+
     rc.token(token)
     try {
       await rc.get('/restapi/v1.0/account/~/extension/~')
     } catch (e) {
       if (e.response && (e.response.data.errors || []).some(error => /\btoken\b/i.test(error.message))) { // invalid token
-        await localforage.removeItem('ringcentral-token')
+        await localforage.clear()
         window.location.reload(false)
       }
     }
-    const r = await rc.get('/restapi/v1.0/glip/teams', { params: { recordCount: 250 } })
+    const prevPageToken = await localforage.getItem('prevPageToken')
+    let r = await rc.get('/restapi/v1.0/glip/teams', { params: { recordCount: 250, pageToken: prevPageToken } })
     console.log(r.data)
-    const div = document.createElement('div')
-    div.innerHTML = '<span>You have logged into Glip</span>'
-    document.body.appendChild(div)
+    await saveTeams(r.data.records)
+    while (r.data.navigation.prevPageToken) {
+      await localforage.setItem('prevPageToken', r.data.navigation.prevPageToken)
+      r = await rc.get('/restapi/v1.0/glip/teams', { params: { recordCount: 250, pageToken: r.data.navigation.prevPageToken } })
+      console.log(r.data)
+      await saveTeams(r.data.records)
+    }
+    const teams = await localforage.getItem('teams')
+    console.log(teams)
+    const regex = new RegExp(`\\b${caseId}\\b`)
+    const existingTeams = []
+    for (const key of Object.keys(teams)) {
+      if (regex.test(teams[key].name)) {
+        console.log(teams[key])
+        existingTeams.push(teams[key])
+      }
+    }
+    console.log(existingTeams)
   }
 })()
