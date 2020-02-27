@@ -64,7 +64,7 @@ const saveTeams = async newTeams => {
     console.log(teams)
     const existingTeams = []
     if (!R.isNil(keyword)) {
-      const regex = new RegExp(`\\b${keyword}\\b`)
+      const regex = new RegExp(`\\b${keyword}\\b`, 'i')
       for (const key of Object.keys(teams)) {
         if (regex.test(teams[key].name)) {
           console.log(teams[key])
@@ -75,7 +75,7 @@ const saveTeams = async newTeams => {
     console.log(existingTeams)
     if (existingTeams.length > 0) {
       const div = document.createElement('div')
-      div.innerHTML = `<span>We have found the following Glip teams:<ul>${existingTeams.map(t => `<li>${t.name}</li>`).join('')}</ul></span>`
+      div.innerHTML = `<span>We have found the following Glip teams:<ul>${existingTeams.map(t => `<li>${t.name} [<a href=" https://app.glip.com/chat/r?groupid=${t.id}">Open in Glip</a>] [<a href="https://jupiter.fiji.gliprc.com/messages/${t.id}">Open in Jupiter</a>]</li>`).join('')}</ul></span>`
       document.body.appendChild(div)
     } else {
 
