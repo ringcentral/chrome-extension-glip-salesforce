@@ -44,7 +44,7 @@ const saveTeams = async newTeams => {
     try {
       await rc.get('/restapi/v1.0/account/~/extension/~')
     } catch (e) {
-      if (e.response && (e.response.data.errors || []).some(error => /\btoken\b/i.test(error.message))) { // invalid token
+      if (e.data && (e.data.errors || []).some(error => /\btoken\b/i.test(error.message))) { // invalid token
         await localforage.clear()
         window.location.reload(false)
       }
@@ -61,14 +61,23 @@ const saveTeams = async newTeams => {
     }
     const teams = await localforage.getItem('teams')
     console.log(teams)
-    const regex = new RegExp(`\\b${caseId}\\b`)
     const existingTeams = []
-    for (const key of Object.keys(teams)) {
-      if (regex.test(teams[key].name)) {
-        console.log(teams[key])
-        existingTeams.push(teams[key])
+    if (!R.isNil(caseId)) {
+      const regex = new RegExp(`\\b${caseId}\\b`)
+      for (const key of Object.keys(teams)) {
+        if (regex.test(teams[key].name)) {
+          console.log(teams[key])
+          existingTeams.push(teams[key])
+        }
       }
     }
     console.log(existingTeams)
+    if (existingTeams.length > 0) {
+      const div = document.createElement('div')
+      div.innerHTML = `<span>We have found the following Glip teams:<ul>${existingTeams.map(t => `<li>${t.name}</li>`).join('')}</ul></span>`
+      document.body.appendChild(div)
+    } else {
+
+    }
   }
 })()
