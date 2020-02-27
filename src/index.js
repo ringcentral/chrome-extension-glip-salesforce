@@ -2,11 +2,12 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 
 import Main from './main'
+import store from './store'
 
 const container = document.createElement('div')
 document.body.appendChild(container)
 
-ReactDOM.render(<Main />, container)
+ReactDOM.render(<Main store={store} />, container)
 
 // import * as R from 'ramda'
 // import RingCentral from 'ringcentral-js-concise'

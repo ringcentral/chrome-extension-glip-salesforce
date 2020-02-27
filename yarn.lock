@@ -4660,6 +4660,11 @@ querystringify@^2.1.1:
   resolved "https://registry.yarnpkg.com/querystringify/-/querystringify-2.1.1.tgz#60e5a5fd64a7f8bfa4d2ab2ed6fdf4c85bad154e"
   integrity sha512-w7fLxIRCRT7U8Qu53jQnJyPkYZIaR4n5151KMfcJlO/A9397Wxb1amJvROTK6TOnp7PfoAmg/qXiNHI+08jRfA==
 
+ramda@^0.26.1:
+  version "0.26.1"
+  resolved "https://registry.yarnpkg.com/ramda/-/ramda-0.26.1.tgz#8d41351eb8111c55353617fc3bbffad8e4d35d06"
+  integrity sha512-hLWjpy7EnsDBb0p+Z3B7rPi3GDeRG5ZtiI33kJhTt+ORCd38AbAIjB/9zRIUoeTbE/AVX5ZkU7m6bznsvrf8eQ==
+
 ramda@^0.27.0:
   version "0.27.0"
   resolved "https://registry.yarnpkg.com/ramda/-/ramda-0.27.0.tgz#915dc29865c0800bf3f69b8fd6c279898b59de43"
@@ -4709,6 +4714,11 @@ react-is@^16.8.1:
   version "16.12.0"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.12.0.tgz#2cc0fe0fba742d97fd527c42a13bec4eeb06241c"
   integrity sha512-rPCkf/mWBtKc97aLL9/txD8DZdemK0vkA3JMLShjlJB3Pj3s+lpf1KaBzMfQrAmhMQB0n1cU/SUGgKKBCe837Q==
+
+react-subx@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/react-subx/-/react-subx-0.5.0.tgz#af47af66d992fb002f67026e5f62e6589a8d83bb"
+  integrity sha512-FAGo5vfEvBSYjCzwMCbn33v6maWMejU0XTIcncFEhSwk/u1tIDinD+62JuH9t1nPobGr26zewivFyiks4ieTlw==
 
 react@^16.13.0:
   version "16.13.0"
@@ -4993,7 +5003,7 @@ run-queue@^1.0.0, run-queue@^1.0.3:
   dependencies:
     aproba "^1.1.1"
 
-rxjs@^6.4.0:
+rxjs@^6.4.0, rxjs@^6.5.2:
   version "6.5.4"
   resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-6.5.4.tgz#e0777fe0d184cec7872df147f303572d414e211c"
   integrity sha512-naMQXcgEo3csAEGvw/NydRA0fuS2nDZJiw1YUWFKU7aPPAPGZEsD4Iimit96qwCieH6y614MCLYwdkrWx7z/7Q==
@@ -5495,6 +5505,14 @@ strip-json-comments@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-3.0.1.tgz#85713975a91fb87bf1b305cca77395e40d2a64a7"
   integrity sha512-VTyMAUfdm047mwKl+u79WIdrZxtFtn+nBxHeb844XBQ9uMNTuTHdx2hc5RiAJYqwTj3wc/xe5HLSdJSkJ+WfZw==
+
+subx@^0.7.6:
+  version "0.7.6"
+  resolved "https://registry.yarnpkg.com/subx/-/subx-0.7.6.tgz#73b20e5e1ca57a6cba4c8b39fc11166742935ce7"
+  integrity sha512-5+V6xRL61waT0JqLFMq1OFI0yFn13Ok3duUXIDFg3kL50F+UbByiSd7YRv5kLqmKMNbLT9VbDbVTrDb0ggMT8g==
+  dependencies:
+    ramda "^0.26.1"
+    rxjs "^6.5.2"
 
 supports-color@6.1.0, supports-color@^6.1.0:
   version "6.1.0"
