@@ -2,7 +2,8 @@
   "license": "MIT",
   "scripts": {
     "dev": "webpack-dev-server --progress --colors",
-    "build": "webpack --progress --colors"
+    "build": "webpack --progress --colors",
+    "release": "cp content.js manifest.json ./chrome_extension/ && cp -r icons ./chrome_extension/"
   },
   "dependencies": {
     "antd": "^4.0.0",
