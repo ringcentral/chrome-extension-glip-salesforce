@@ -3,14 +3,19 @@ import RingCentral from 'ringcentral-js-concise'
 import localforage from 'localforage'
 import * as R from 'ramda'
 
+let urlSearchParams = new URLSearchParams(new URL(window.location.href).search)
+if (!R.isNil(urlSearchParams.get('code')) && !R.isNil(urlSearchParams.get('state'))) {
+  const code = urlSearchParams.get('code')
+  urlSearchParams = new URLSearchParams(urlSearchParams.get('state'))
+  urlSearchParams.set('code', code)
+}
 const redirectUri = window.location.origin + window.location.pathname
 const rc = new RingCentral(process.env.RINGCENTRAL_CLIENT_ID, process.env.RINGCENTRAL_CLIENT_SECRET, RingCentral.PRODUCTION_SERVER)
-const urlSearchParams = new URLSearchParams(new URL(window.location.href).search)
 
 const store = SubX.create({
   ready: false,
   token: undefined,
-  authorizeUri: rc.authorizeUri(redirectUri),
+  authorizeUri: rc.authorizeUri(redirectUri, { state: urlSearchParams.toString() }),
   existingTeams: [],
   keyword: urlSearchParams.get('keyword'),
   async init () {
