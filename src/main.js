@@ -1,7 +1,7 @@
 import React from 'react'
 import { Component } from 'react-subx'
 import * as R from 'ramda'
-import { Spin } from 'antd'
+import { Spin, Button } from 'antd'
 
 class App extends Component {
   render () {
@@ -20,7 +20,7 @@ class Main extends Component {
 class Login extends Component {
   render () {
     const store = this.props.store
-    return <a href={store.authorizeUri}>Login Glip</a>
+    return <a href={store.authorizeUri}><Button>Login Glip</Button></a>
   }
 }
 
@@ -34,7 +34,22 @@ class Home extends Component {
 class Teams extends Component {
   render () {
     const store = this.props.store
-    return `We have found teams matching keyword "${store.keyword}"`
+    return (
+      <>
+        <div>
+          We have found teams matching keyword "{store.keyword}":
+          <ul>
+            {store.existingTeams.map(team => <Team key={team.id} team={team} />)}
+          </ul>
+        </div>
+      </>
+    )
+  }
+}
+
+class Team extends Component {
+  render () {
+    return <li>{this.props.team.name}</li>
   }
 }
 
