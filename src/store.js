@@ -5,19 +5,22 @@ import * as R from 'ramda'
 
 const redirectUri = window.location.origin + window.location.pathname
 const rc = new RingCentral(process.env.RINGCENTRAL_CLIENT_ID, process.env.RINGCENTRAL_CLIENT_SECRET, RingCentral.PRODUCTION_SERVER)
+const urlSearchParams = new URLSearchParams(new URL(window.location.href).search)
 
 const store = SubX.create({
   ready: false,
   token: undefined,
   authorizeUri: rc.authorizeUri(redirectUri),
+  existingTeams: [],
+  keyword: urlSearchParams.get('keyword'),
   async init () {
     rc.on('tokenChanged', token => {
       this.token = token
     })
-    const urlSearchParams = new URLSearchParams(new URL(window.location.href).search)
     const code = urlSearchParams.get('code')
     if (code) {
       await rc.authorize({ code, redirectUri })
+      await localforage.setItem('token', rc.token())
     }
   },
   async load () {
@@ -49,6 +52,16 @@ const store = SubX.create({
       }
       await localforage.setItem('teams', teams)
     }
+    const existingTeams = []
+    if (!R.isNil(this.keyword)) {
+      const regex = new RegExp(`\\b${this.keyword}\\b`, 'i')
+      for (const key of Object.keys(teams)) {
+        if (regex.test(teams[key].name)) {
+          existingTeams.push(teams[key])
+        }
+      }
+    }
+    this.existingTeams = existingTeams
   }
 })
 

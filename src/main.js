@@ -26,7 +26,22 @@ class Login extends Component {
 
 class Home extends Component {
   render () {
-    return 'Home page'
+    const store = this.props.store
+    return store.existingTeams.length > 0 ? <Teams store={store} /> : <CreateTeam store={store} />
+  }
+}
+
+class Teams extends Component {
+  render () {
+    const store = this.props.store
+    return `We have found teams matching keyword "${store.keyword}"`
+  }
+}
+
+class CreateTeam extends Component {
+  render () {
+    const store = this.props.store
+    return `There is no team matching keyword "${store.keyword}"`
   }
 }
 
