@@ -36,12 +36,10 @@ class Teams extends Component {
     const store = this.props.store
     return (
       <>
-        <div>
-          We have found teams matching keyword "{store.keyword}":
-          <ul>
-            {store.existingTeams.map(team => <Team key={team.id} team={team} />)}
-          </ul>
-        </div>
+        We have found teams matching keyword "{store.keyword}":
+        <ul>
+          {store.existingTeams.map(team => <Team key={team.id} team={team} />)}
+        </ul>
       </>
     )
   }
@@ -49,14 +47,21 @@ class Teams extends Component {
 
 class Team extends Component {
   render () {
-    return <li>{this.props.team.name}</li>
+    const { team } = this.props
+    return (
+      <li>
+        {team.name}
+        [<a href={`https://app.glip.com/chat/r?groupid=${team.id}`}>Open in Glip</a>]
+        [<a href={`https://jupiter.fiji.gliprc.com/messages/${team.id}`}>Open in Jupiter</a>]
+      </li>
+    )
   }
 }
 
 class CreateTeam extends Component {
   render () {
     const store = this.props.store
-    return `There is no team matching keyword "${store.keyword}"`
+    return `There is no team matching keyword "${store.keyword}", create a new team?`
   }
 }
 
