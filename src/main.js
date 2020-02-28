@@ -61,7 +61,12 @@ class Team extends Component {
 class CreateTeam extends Component {
   render () {
     const store = this.props.store
-    return `There is no team matching keyword "${store.keyword}", create a new team?`
+    return (
+      <>
+        <div>There is no team matching "{store.keyword}"</div>
+        <button onClick={e => store.createTeam(store.teamName)}>Create a team</button> with name "{store.teamName}"
+      </>
+    )
   }
 }
 

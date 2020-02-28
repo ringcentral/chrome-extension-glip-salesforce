@@ -18,6 +18,7 @@ const store = SubX.create({
   authorizeUri: rc.authorizeUri(redirectUri, { state: urlSearchParams.toString() }),
   existingTeams: [],
   keyword: urlSearchParams.get('keyword'),
+  teamName: urlSearchParams.get('teamName'),
   async init () {
     rc.on('tokenChanged', token => {
       this.token = token
@@ -67,6 +68,9 @@ const store = SubX.create({
       }
     }
     this.existingTeams = existingTeams
+  },
+  createTeam (teamName) {
+    console.log('team created')
   }
 })
 
