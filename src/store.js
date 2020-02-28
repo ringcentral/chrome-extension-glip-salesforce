@@ -70,12 +70,16 @@ const store = SubX.create({
     this.existingTeams = existingTeams
   },
   async createTeam (teamName) {
-    await rc.post('/restapi/v1.0/glip/teams', {
-      public: true,
-      name: teamName,
-      description: teamName
-    })
-    window.location.reload(false)
+    try {
+      await rc.post('/restapi/v1.0/glip/teams', {
+        public: true,
+        name: teamName,
+        description: teamName
+      })
+      window.location.reload(false)
+    } catch (e) {
+      console.log(e)
+    }
   }
 })
 
