@@ -10,7 +10,6 @@ console.log(accountName)
 const subject = Array.from(document.getElementsByClassName('labelCol')).filter(ele => ele.textContent.trim() === 'Subject')[0].nextSibling.textContent.trim()
 console.log(subject)
 const urlSearchParams = new URLSearchParams()
-urlSearchParams.append('caseId', caseId)
-urlSearchParams.append('accountName', accountName)
-urlSearchParams.append('subject', subject)
+urlSearchParams.append('keyword', caseId)
+urlSearchParams.append('teamName', `${accountName}: Case ${caseId} ${subject}`) // Dolby Labs: Case 09681148 China/India GW solution pricing
 containerNode.innerHTML = `<a target="_blank" href="https://chuntaoliu.com/chrome-extension-glip-salesforce/index.html?${urlSearchParams.toString()}">Go to Glip team</a>`
