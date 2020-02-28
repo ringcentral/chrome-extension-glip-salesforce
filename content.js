@@ -12,4 +12,4 @@ console.log(subject)
 const urlSearchParams = new URLSearchParams()
 urlSearchParams.append('keyword', caseId)
 urlSearchParams.append('teamName', `${accountName}: Case ${caseId} ${subject}`) // Dolby Labs: Case 09681148 China/India GW solution pricing
-containerNode.innerHTML = `<a target="_blank" href="https://chuntaoliu.com/chrome-extension-glip-salesforce/index.html?${urlSearchParams.toString()}">Go to Glip team</a>`
+containerNode.innerHTML = `<a target="_blank" href="https://chuntaoliu.com/chrome-extension-glip-salesforce/?${urlSearchParams.toString()}">Go to Glip team</a>`
