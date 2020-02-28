@@ -2,6 +2,7 @@ import SubX from 'subx'
 import RingCentral from 'ringcentral-js-concise'
 import localforage from 'localforage'
 import * as R from 'ramda'
+import { message } from 'antd'
 
 let urlSearchParams = new URLSearchParams(new URL(window.location.href).search)
 if (!R.isNil(urlSearchParams.get('code')) && !R.isNil(urlSearchParams.get('state'))) {
@@ -79,6 +80,9 @@ const store = SubX.create({
       window.location.reload(false)
     } catch (e) {
       console.log(e)
+      if (e.data && e.data.errors && e.data.errors[0].message.includes('already used by another team')) {
+        message.error('Some one else alreay created this team but it is private, please ask the creator to add you.', 0)
+      }
     }
   }
 })
