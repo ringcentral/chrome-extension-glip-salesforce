@@ -3,10 +3,18 @@ import { Component } from 'react-subx'
 import * as R from 'ramda'
 import { Spin, Button } from 'antd'
 
+import './index.css'
+import Icon from '../icons/icon16.png'
+
 class App extends Component {
   render () {
     const store = this.props.store
-    return store.ready ? <Main store={store} /> : <Spin size='large' />
+    return (
+      <>
+        <img src={Icon} id='glip-icon' />
+        {store.ready ? <Main store={store} /> : <Spin size='large' />}
+      </>
+    )
   }
 }
 
@@ -34,11 +42,7 @@ class Home extends Component {
 class Teams extends Component {
   render () {
     const store = this.props.store
-    return (
-      <ul>
-        {store.existingTeams.map(team => <Team key={team.id} team={team} />)}
-      </ul>
-    )
+    return store.existingTeams.map(team => <Team key={team.id} team={team} />)
   }
 }
 
@@ -46,11 +50,11 @@ class Team extends Component {
   render () {
     const { team } = this.props
     return (
-      <li>
-        {team.name}
+      <>
+        Glip team: {team.name}
         [<a href={`https://app.glip.com/chat/r?groupid=${team.id}`} target='_blank' rel='noopener noreferrer'>Open in Glip</a>]
         [<a href={`https://jupiter.fiji.gliprc.com/messages/${team.id}`} target='_blank' rel='noopener noreferrer'>Open in Jupiter</a>]
-      </li>
+      </>
     )
   }
 }
