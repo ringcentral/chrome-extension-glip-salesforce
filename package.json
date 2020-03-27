@@ -3,7 +3,7 @@
   "scripts": {
     "dev": "webpack-dev-server --progress --colors",
     "build": "webpack --progress --colors",
-    "release": "cp content.js manifest.json ./chrome_extension/ && cp -r icons ./chrome_extension/"
+    "release": "rm -rf chrome_extension/* && cp content.js manifest.json ./chrome_extension/ && cp -r icons ./chrome_extension/"
   },
   "dependencies": {
     "antd": "^4.0.4",
