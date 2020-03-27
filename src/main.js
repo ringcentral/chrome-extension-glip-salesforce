@@ -20,7 +20,7 @@ class Main extends Component {
 class Login extends Component {
   render () {
     const store = this.props.store
-    return <a href={store.authorizeUri}><Button>Login Glip</Button></a>
+    return <a href={store.authorizeUri}><Button type='primary'>Login Glip</Button></a>
   }
 }
 
@@ -35,12 +35,9 @@ class Teams extends Component {
   render () {
     const store = this.props.store
     return (
-      <>
-        We have found teams matching keyword "{store.keyword}":
-        <ul>
-          {store.existingTeams.map(team => <Team key={team.id} team={team} />)}
-        </ul>
-      </>
+      <ul>
+        {store.existingTeams.map(team => <Team key={team.id} team={team} />)}
+      </ul>
     )
   }
 }
@@ -61,12 +58,7 @@ class Team extends Component {
 class CreateTeam extends Component {
   render () {
     const store = this.props.store
-    return (
-      <>
-        <div>There is no team matching "{store.keyword}"</div>
-        <button onClick={e => store.createTeam(store.teamName)}>Create a team</button> with name "{store.teamName}"
-      </>
-    )
+    return <Button type='primary' onClick={e => store.createTeam(store.teamName)}>Create a Glip team with name "{store.teamName}"</Button>
   }
 }
 
