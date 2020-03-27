@@ -68100,9 +68100,7 @@ class App extends react_subx__WEBPACK_IMPORTED_MODULE_5__["Component"] {
       id: "glip-icon"
     }), store.ready ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement(Main, {
       store: store
-    }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement(antd_es_spin__WEBPACK_IMPORTED_MODULE_3__["default"], {
-      size: "large"
-    }));
+    }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement(antd_es_spin__WEBPACK_IMPORTED_MODULE_3__["default"], null));
   }
 
 }
@@ -68146,7 +68144,7 @@ class Home extends react_subx__WEBPACK_IMPORTED_MODULE_5__["Component"] {
 class Teams extends react_subx__WEBPACK_IMPORTED_MODULE_5__["Component"] {
   render() {
     const store = this.props.store;
-    return store.existingTeams.map(team => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement(Team, {
+    return store.existingTeams.slice(0, 1).map(team => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement(Team, {
       key: team.id,
       team: team
     }));
@@ -68159,7 +68157,7 @@ class Team extends react_subx__WEBPACK_IMPORTED_MODULE_5__["Component"] {
     const {
       team
     } = this.props;
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_4___default.a.Fragment, null, "Glip team: ", team.name, "[", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement("a", {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_4___default.a.Fragment, null, team.name, "[", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement("a", {
       href: `https://app.glip.com/chat/r?groupid=${team.id}`,
       target: "_blank",
       rel: "noopener noreferrer"

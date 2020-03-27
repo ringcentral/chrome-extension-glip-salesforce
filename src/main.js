@@ -12,7 +12,7 @@ class App extends Component {
     return (
       <>
         <img src={Icon} id='glip-icon' />
-        {store.ready ? <Main store={store} /> : <Spin size='large' />}
+        {store.ready ? <Main store={store} /> : <Spin />}
       </>
     )
   }
@@ -42,7 +42,7 @@ class Home extends Component {
 class Teams extends Component {
   render () {
     const store = this.props.store
-    return store.existingTeams.map(team => <Team key={team.id} team={team} />)
+    return store.existingTeams.slice(0, 1).map(team => <Team key={team.id} team={team} />)
   }
 }
 
@@ -51,7 +51,7 @@ class Team extends Component {
     const { team } = this.props
     return (
       <>
-        Glip team: {team.name}
+        {team.name}
         [<a href={`https://app.glip.com/chat/r?groupid=${team.id}`} target='_blank' rel='noopener noreferrer'>Open in Glip</a>]
         [<a href={`https://jupiter.fiji.gliprc.com/messages/${team.id}`} target='_blank' rel='noopener noreferrer'>Open in Jupiter</a>]
       </>
