@@ -51,8 +51,8 @@ class Team extends Component {
     return (
       <li>
         {team.name}
-        [<a href={`https://app.glip.com/chat/r?groupid=${team.id}`}>Open in Glip</a>]
-        [<a href={`https://jupiter.fiji.gliprc.com/messages/${team.id}`}>Open in Jupiter</a>]
+        [<a href={`https://app.glip.com/chat/r?groupid=${team.id}`} target='_blank' rel='noopener noreferrer'>Open in Glip</a>]
+        [<a href={`https://jupiter.fiji.gliprc.com/messages/${team.id}`} target='_blank' rel='noopener noreferrer'>Open in Jupiter</a>]
       </li>
     )
   }
