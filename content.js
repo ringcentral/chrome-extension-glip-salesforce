@@ -1,6 +1,5 @@
 const sectionHeader = document.getElementById('section_header')
 const containerNode = document.createElement('div')
-containerNode.style.cssText = 'float: right;'
 sectionHeader.parentNode.insertBefore(containerNode, sectionHeader)
 
 const caseId = document.getElementsByClassName('pageDescription')[0].textContent.trim()
@@ -12,4 +11,4 @@ console.log(subject)
 const urlSearchParams = new URLSearchParams()
 urlSearchParams.append('keyword', caseId)
 urlSearchParams.append('teamName', `${accountName}: Case ${caseId} ${subject}`) // Dolby Labs: Case 09681148 China/India GW solution pricing
-containerNode.innerHTML = `<iframe width="400" height="100" src="https://chuntaoliu.com/chrome-extension-glip-salesforce/?${urlSearchParams.toString()}"></iframe>`
+containerNode.innerHTML = `<iframe frameBorder="0" width="100%" height="64" src="https://chuntaoliu.com/chrome-extension-glip-salesforce/?${urlSearchParams.toString()}"></iframe>`
