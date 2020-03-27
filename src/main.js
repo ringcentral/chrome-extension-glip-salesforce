@@ -12,7 +12,7 @@ class App extends Component {
     return (
       <>
         <img src={Icon} id='glip-icon' />
-        {store.ready ? <Main store={store} /> : <Spin />}
+        {store.ready ? <Main store={store} /> : <Spin size='small' />}
       </>
     )
   }
@@ -28,7 +28,7 @@ class Main extends Component {
 class Login extends Component {
   render () {
     const store = this.props.store
-    return <a href={store.authorizeUri}><Button type='primary'>Login Glip</Button></a>
+    return <a href={store.authorizeUri}><Button size='small' type='primary'>Login Glip</Button></a>
   }
 }
 
@@ -52,8 +52,8 @@ class Team extends Component {
     return (
       <>
         {team.name}
-        [<a href={`https://app.glip.com/chat/r?groupid=${team.id}`} target='_blank' rel='noopener noreferrer'>Open in Glip</a>]
-        [<a href={`https://jupiter.fiji.gliprc.com/messages/${team.id}`} target='_blank' rel='noopener noreferrer'>Open in Jupiter</a>]
+        &nbsp;[<a href={`https://app.glip.com/chat/r?groupid=${team.id}`} target='_blank' rel='noopener noreferrer'>Open in Glip</a>]
+        &nbsp;[<a href={`https://jupiter.fiji.gliprc.com/messages/${team.id}`} target='_blank' rel='noopener noreferrer'>Open in Jupiter</a>]
       </>
     )
   }
@@ -62,7 +62,7 @@ class Team extends Component {
 class CreateTeam extends Component {
   render () {
     const store = this.props.store
-    return <Button type='primary' onClick={e => store.createTeam(store.teamName)}>Create a Glip team with name "{store.teamName}"</Button>
+    return <Button size='small' type='primary' onClick={e => store.createTeam(store.teamName)}>Create a Glip team with name "{store.teamName}"</Button>
   }
 }
 

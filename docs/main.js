@@ -68100,7 +68100,9 @@ class App extends react_subx__WEBPACK_IMPORTED_MODULE_5__["Component"] {
       id: "glip-icon"
     }), store.ready ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement(Main, {
       store: store
-    }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement(antd_es_spin__WEBPACK_IMPORTED_MODULE_3__["default"], null));
+    }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement(antd_es_spin__WEBPACK_IMPORTED_MODULE_3__["default"], {
+      size: "small"
+    }));
   }
 
 }
@@ -68123,6 +68125,7 @@ class Login extends react_subx__WEBPACK_IMPORTED_MODULE_5__["Component"] {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement("a", {
       href: store.authorizeUri
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement(antd_es_button__WEBPACK_IMPORTED_MODULE_1__["default"], {
+      size: "small",
       type: "primary"
     }, "Login Glip"));
   }
@@ -68157,11 +68160,11 @@ class Team extends react_subx__WEBPACK_IMPORTED_MODULE_5__["Component"] {
     const {
       team
     } = this.props;
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_4___default.a.Fragment, null, team.name, "[", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement("a", {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_4___default.a.Fragment, null, team.name, "\xA0[", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement("a", {
       href: `https://app.glip.com/chat/r?groupid=${team.id}`,
       target: "_blank",
       rel: "noopener noreferrer"
-    }, "Open in Glip"), "] [", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement("a", {
+    }, "Open in Glip"), "] \xA0[", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement("a", {
       href: `https://jupiter.fiji.gliprc.com/messages/${team.id}`,
       target: "_blank",
       rel: "noopener noreferrer"
@@ -68174,6 +68177,7 @@ class CreateTeam extends react_subx__WEBPACK_IMPORTED_MODULE_5__["Component"] {
   render() {
     const store = this.props.store;
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement(antd_es_button__WEBPACK_IMPORTED_MODULE_1__["default"], {
+      size: "small",
       type: "primary",
       onClick: e => store.createTeam(store.teamName)
     }, "Create a Glip team with name \"", store.teamName, "\"");
