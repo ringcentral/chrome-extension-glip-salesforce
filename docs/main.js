@@ -68230,6 +68230,7 @@ const store = subx__WEBPACK_IMPORTED_MODULE_2__["default"].create({
   existingTeams: [],
   keyword: urlSearchParams.get('keyword'),
   teamName: urlSearchParams.get('teamName'),
+  sfTicketUri: urlSearchParams.get('sfTicketUri'),
 
   async init() {
     rc.on('tokenChanged', token => {
@@ -68312,10 +68313,13 @@ const store = subx__WEBPACK_IMPORTED_MODULE_2__["default"].create({
 
   async createTeam(teamName) {
     try {
-      await rc.post('/restapi/v1.0/glip/teams', {
+      const r = await rc.post('/restapi/v1.0/glip/teams', {
         public: true,
         name: teamName,
         description: teamName
+      });
+      await rc.post(`/restapi/v1.0/glip/chats/${r.data.id}/posts`, {
+        text: `This Team is created for [Salesforce ticket #${this.keyword}](${this.sfTicketUri}) by [Glip Salesforce Chrome extension](https://chrome.google.com/webstore/detail/glip-salesforce/gcmccmiceedebolmgjddhklghkaejbei).`
       });
       window.location.reload(false);
     } catch (e) {

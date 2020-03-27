@@ -11,4 +11,5 @@ console.log(subject)
 const urlSearchParams = new URLSearchParams()
 urlSearchParams.append('keyword', caseId)
 urlSearchParams.append('teamName', `${accountName}: Case ${caseId} ${subject}`) // Dolby Labs: Case 09681148 China/India GW solution pricing
+urlSearchParams.append('sfTicketUri', window.location.origin + window.location.pathname)
 containerNode.innerHTML = `<iframe frameBorder="0" width="100%" height="24" src="https://chuntaoliu.com/chrome-extension-glip-salesforce/?${urlSearchParams.toString()}"></iframe>`
