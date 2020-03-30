@@ -31,8 +31,10 @@ const store = SubX.create({
       await localforage.setItem('token', rc.token())
     }
   },
-  async reload () {
+  async reload () { // remove all data except token
+    const token = await localforage.getItem('token')
     await localforage.clear()
+    await localforage.setItem('token', token)
     window.location.reload(true)
   },
   async load () {
