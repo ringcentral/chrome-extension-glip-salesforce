@@ -40,7 +40,7 @@ class Home extends Component {
       <>
         {store.existingTeams.length > 0 ? <Teams store={store} /> : <CreateTeam store={store} />}
         <a onClick={e => store.reload()}>
-          <Tooltip title='Reload Glip team data' placement='bottomRight'>
+          <Tooltip title='Reload Glip team data' placement='Left'>
             <ReloadOutlined id='reload-icon' />
           </Tooltip>
         </a>
