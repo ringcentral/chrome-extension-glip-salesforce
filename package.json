@@ -6,7 +6,7 @@
     "release": "rm -rf chrome_extension/* && cp content.js manifest.json ./chrome_extension/ && cp -r icons ./chrome_extension/"
   },
   "dependencies": {
-    "antd": "^4.0.4",
+    "antd": "^4.1.0",
     "localforage": "^1.7.3",
     "ramda": "^0.27.0",
     "react": "^16.13.1",
@@ -25,7 +25,7 @@
     "css-loader": "^3.4.2",
     "dotenv-override-true": "^6.2.0",
     "file-loader": "^6.0.0",
-    "html-webpack-plugin": "^4.0.2",
+    "html-webpack-plugin": "^4.0.3",
     "standard": "^14.3.3",
     "style-loader": "^1.1.3",
     "webpack": "^4.42.1",

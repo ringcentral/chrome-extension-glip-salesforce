@@ -1,7 +1,7 @@
 import React from 'react'
 import { Component } from 'react-subx'
 import * as R from 'ramda'
-import { Spin, Button, Tooltip } from 'antd'
+import { Spin, Button } from 'antd'
 import { ReloadOutlined } from '@ant-design/icons'
 
 import './index.css'
@@ -40,9 +40,7 @@ class Home extends Component {
       <>
         {store.existingTeams.length > 0 ? <Teams store={store} /> : <CreateTeam store={store} />}
         <a onClick={e => store.reload()}>
-          <Tooltip title='Reload Glip team data' placement='Left'>
-            <ReloadOutlined id='reload-icon' />
-          </Tooltip>
+          <ReloadOutlined id='reload-icon' />
         </a>
       </>
     )
