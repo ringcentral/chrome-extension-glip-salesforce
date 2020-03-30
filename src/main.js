@@ -1,7 +1,8 @@
 import React from 'react'
 import { Component } from 'react-subx'
 import * as R from 'ramda'
-import { Spin, Button } from 'antd'
+import { Spin, Button, Tooltip } from 'antd'
+import { ReloadOutlined } from '@ant-design/icons'
 
 import './index.css'
 import Icon from '../icons/icon16.png'
@@ -28,14 +29,23 @@ class Main extends Component {
 class Login extends Component {
   render () {
     const store = this.props.store
-    return <a href={store.authorizeUri}><Button size='small' type='primary'>Login Glip</Button></a>
+    return <a href={store.authorizeUri} target='_parent'><Button size='small' type='primary'>Login Glip</Button></a>
   }
 }
 
 class Home extends Component {
   render () {
     const store = this.props.store
-    return store.existingTeams.length > 0 ? <Teams store={store} /> : <CreateTeam store={store} />
+    return (
+      <>
+        {store.existingTeams.length > 0 ? <Teams store={store} /> : <CreateTeam store={store} />}
+        <a onClick={e => store.reload()}>
+          <Tooltip title='Reload Glip team data' placement='bottomRight'>
+            <ReloadOutlined id='reload-icon' />
+          </Tooltip>
+        </a>
+      </>
+    )
   }
 }
 
