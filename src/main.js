@@ -61,7 +61,7 @@ class Team extends Component {
       <>
         {team.name}
         &nbsp;[<a href={`https://app.glip.com/chat/r?groupid=${team.id}`} target='_blank' rel='noopener noreferrer'>Open in Glip</a>]
-        &nbsp;[<a href={`https://jupiter.fiji.gliprc.com/messages/${team.id}`} target='_blank' rel='noopener noreferrer'>Open in Jupiter</a>]
+        &nbsp;[<a href={`https://app.ringcentral.com/messages/${team.id}`} target='_blank' rel='noopener noreferrer'>Open in Jupiter</a>]
       </>
     )
   }
