@@ -3,6 +3,8 @@
 }
 
 #reload-icon {
-  margin: 0 8px;
+  font-size: 18px;
+  margin-top: 3px;
+  margin-right: 8px;
   float: right;
 }
