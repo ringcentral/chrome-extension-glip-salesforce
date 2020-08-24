@@ -96,6 +96,7 @@ const store = SubX.create({
     }
   },
   async openTeam(teamId, uriPrefix) {
+    await rc.post(`/restapi/v1.0/glip/teams/${teamId}/join`)
     window.window.open(`${uriPrefix}${teamId}`, '_blank');
   }
 })
