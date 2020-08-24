@@ -94,6 +94,9 @@ const store = SubX.create({
         message.error('Some one else already created this team but it is private, please ask the creator to add you.', 0)
       }
     }
+  },
+  async openTeam(teamId, uriPrefix) {
+    window.window.open(`${uriPrefix}${teamId}`, '_blank');
   }
 })
 
