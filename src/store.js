@@ -91,7 +91,7 @@ const store = SubX.create({
     } catch (e) {
       console.log(e)
       if (e.data && e.data.errors && e.data.errors[0].message.includes('already used by another team')) {
-        message.error('Some one else alreay created this team but it is private, please ask the creator to add you.', 0)
+        message.error('Some one else already created this team but it is private, please ask the creator to add you.', 0)
       }
     }
   }
