@@ -96,8 +96,13 @@ const store = SubX.create({
     }
   },
   async openTeam(teamId, uriPrefix) {
-    await rc.post(`/restapi/v1.0/glip/teams/${teamId}/join`)
-    window.window.open(`${uriPrefix}${teamId}`, '_blank');
+    try {
+      await rc.post(`/restapi/v1.0/glip/teams/${teamId}/join`)
+    } catch(e) {
+      // Join team failed, the team is private. And you are already a member, otherwise you won't see the team at all.
+    } finally {
+      window.window.open(`${uriPrefix}${teamId}`, '_blank');
+    }
   }
 })
 
