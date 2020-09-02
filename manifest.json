@@ -5,7 +5,10 @@
   "manifest_version": 2,
   "content_scripts": [
     {
-      "matches": ["https://*.salesforce.com/5*"],
+      "matches": [
+        "https://*.salesforce.com/5*",
+        "https://*.lightning.force.com/lightning/r/Case/5*/view"
+      ],
       "js": ["content.js"]
     }
   ],
