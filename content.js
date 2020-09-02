@@ -1,18 +1,10 @@
 let intervalHandle = undefined
 
 const f = () => {
-  if(document.getElementsByTagName('title') === null) {
-    return; // wait for page ready
-  }
-  if(document.getElementsByTagName('title')[0].text.match(/\d{6,10}/) === null) {
-    return // wait for page ready
-  }
-
-
+  let caseId = ''
   let accountName = ''
   let subject = ''
   const containerNode = document.createElement('div')
-  const caseId = document.getElementsByTagName('title')[0].text.match(/\d{6,10}/)[0]
 
   const sectionHeader = document.getElementById('section_header')
   if(sectionHeader === null) {
@@ -20,19 +12,21 @@ const f = () => {
     const flexPage = document.querySelector('one-record-home-flexipage2');
     const text = flexPage.innerText
     if(text.match(/\nSubject\n(.+?)\n/) === null) {
-      console.log('wait for ready')
+      console.log('wait for page ready')
       return // wait for page ready
     }
     clearInterval(intervalHandle)
-    subject = text.match(/\nSubject\n(.+?)\n/)[1]
+    caseId = text.match(/\nCase Number\n(.+?)\n/)[1]
     accountName = text.match(/\nAccount Name\n(.+?)\n/)[1]
+    subject = text.match(/\nSubject\n(.+?)\n/)[1]
     flexPage.prepend(containerNode);
   } else {
-    clearInterval(intervalHandle)
     // classic
-    sectionHeader.parentNode.insertBefore(containerNode, sectionHeader)
+    clearInterval(intervalHandle)
+    caseId = document.getElementsByTagName('title')[0].text.match(/\d{6,10}/)[0]
     accountName = Array.from(document.getElementsByClassName('labelCol')).filter(ele => ele.textContent.trim() === 'Account Name')[0].nextSibling.textContent.trim()
     subject = Array.from(document.getElementsByClassName('labelCol')).filter(ele => ele.textContent.trim() === 'Subject')[0].nextSibling.textContent.trim()
+    sectionHeader.parentNode.insertBefore(containerNode, sectionHeader)
   }
 
   const urlSearchParams = new URLSearchParams()
