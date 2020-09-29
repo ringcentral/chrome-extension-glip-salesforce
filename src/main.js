@@ -50,7 +50,7 @@ class Home extends Component {
 class Teams extends Component {
   render () {
     const store = this.props.store
-    return store.existingTeams.slice(0, 1).map(team => <Team key={team.id} team={team} store={store} />)
+    return store.existingTeams.map(team => <Team key={team.id} team={team} store={store} />).reduce((prev, curr) => [prev, ' | ', curr])
   }
 }
 
@@ -60,8 +60,8 @@ class Team extends Component {
     return (
       <>
         {team.name}
-        &nbsp;[<a rel='noopener noreferrer' onClick={() => store.openTeam(team.id, 'https://app.glip.com/chat/r?groupid=')}>Open in Glip</a>]
-        &nbsp;[<a rel='noopener noreferrer' onClick={() => store.openTeam(team.id, 'https://app.ringcentral.com/messages/')}>Open in Jupiter</a>]
+        &nbsp;[<a rel='noopener noreferrer' onClick={() => store.openTeam(team.id, 'https://app.glip.com/chat/r?groupid=')}>Glip</a>]
+        &nbsp;[<a rel='noopener noreferrer' onClick={() => store.openTeam(team.id, 'https://app.ringcentral.com/messages/')}>Jupiter</a>]
       </>
     )
   }
