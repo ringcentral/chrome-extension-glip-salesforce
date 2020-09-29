@@ -9,11 +9,15 @@ const f = () => {
   const sectionHeader = document.getElementById('section_header')
   if(sectionHeader === null) {
     // lightning
-    const flexPage = document.querySelector('one-record-home-flexipage2');
+    const flexPage = document.querySelector('one-record-home-flexipage2')
+    if(flexPage === null) {
+      console.log('wait for page ready')
+      return
+    }
     const text = flexPage.innerText
     if(text.match(/\nSubject\n(.+?)\n/) === null) {
       console.log('wait for page ready')
-      return // wait for page ready
+      return
     }
     clearInterval(intervalHandle)
     caseId = text.match(/\nCase Number\n(.+?)\n/)[1]
