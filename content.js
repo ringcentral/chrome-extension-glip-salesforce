@@ -1,4 +1,5 @@
 let intervalHandle = undefined
+let url = undefined;
 
 const f = () => {
   let caseId = ''
@@ -9,6 +10,10 @@ const f = () => {
   const sectionHeader = document.getElementById('section_header')
   if(sectionHeader === null) {
     // lightning
+    if(url === window.location.href) {
+      return;
+    }
+    url = undefined;
     const flexPage = document.querySelector('one-record-home-flexipage2')
     if(flexPage === null) {
       console.log('wait for page ready')
@@ -19,11 +24,11 @@ const f = () => {
       console.log('wait for page ready')
       return
     }
-    clearInterval(intervalHandle)
     caseId = text.match(/\nCase Number\n(.+?)\n/)[1]
     accountName = text.match(/\nAccount Name\n(.+?)\n/)[1]
     subject = text.match(/\nSubject\n(.+?)\n/)[1]
     flexPage.prepend(containerNode)
+    url = window.location.href;
   } else {
     // classic
     clearInterval(intervalHandle)
