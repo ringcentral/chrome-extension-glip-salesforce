@@ -15,7 +15,7 @@ const f = () => {
       return
     }
     const text = flexPage.innerText
-    if(text.match(/\nSubject\n(.+?)\n/) === null) {
+    if(text.match(/\nCase Number\n(.+?)\n/) === null || text.match(/\nAccount Name\n(.+?)\n/) === null || text.match(/\nSubject\n(.+?)\n/) === null) {
       console.log('wait for page ready')
       return
     }
@@ -23,7 +23,7 @@ const f = () => {
     caseId = text.match(/\nCase Number\n(.+?)\n/)[1]
     accountName = text.match(/\nAccount Name\n(.+?)\n/)[1]
     subject = text.match(/\nSubject\n(.+?)\n/)[1]
-    flexPage.prepend(containerNode);
+    flexPage.prepend(containerNode)
   } else {
     // classic
     clearInterval(intervalHandle)
