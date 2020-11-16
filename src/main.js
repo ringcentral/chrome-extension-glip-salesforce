@@ -60,8 +60,8 @@ class Team extends Component {
     return (
       <>
         {team.name}
-        &nbsp;[<a rel='noopener noreferrer' onClick={() => store.openTeam(team.id, 'https://app.glip.com/chat/r?groupid=')}>Glip</a>]
-        &nbsp;[<a rel='noopener noreferrer' onClick={() => store.openTeam(team.id, 'https://app.ringcentral.com/messages/')}>Jupiter</a>]
+        &nbsp;[<a rel='noopener noreferrer' onClick={() => store.openTeam(team.id, 'rcapp://chat/r?groupid=')}>App</a>]
+        &nbsp;[<a rel='noopener noreferrer' onClick={() => store.openTeam(team.id, 'https://app.ringcentral.com/messages/')}>Web</a>]
       </>
     )
   }
