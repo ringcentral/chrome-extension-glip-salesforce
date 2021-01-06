@@ -16,17 +16,19 @@ const f = () => {
     url = undefined;
     const flexPage = document.querySelector('one-record-home-flexipage2')
     if(flexPage === null) {
-      console.log('wait for page ready')
+      console.log('wait for page ready - flexPage')
       return
     }
     const text = flexPage.innerText
-    if(text.match(/\nCase Number\n(.+?)\n/) === null || text.match(/\nAccount Name\n(.+?)\n/) === null || text.match(/\nSubject\n(.+?)\n/) === null) {
-      console.log('wait for page ready')
+    if((text.match(/\nCase Number\n(.+?)\n/) === null && text.match(/Case Number(.+?)Case Severity/) === null)
+      || (text.match(/\nAccount Name\n(.+?)\n/) === null && text.match(/Account Name(.+?)Edit Account Name/) === null)
+      || (text.match(/\nSubject\n(.+?)\n/) === null && text.match(/Subject(.+?)Edit Subject/) === null)) {
+      console.log('wait for page ready - text')
       return
     }
-    caseId = text.match(/\nCase Number\n(.+?)\n/)[1]
-    accountName = text.match(/\nAccount Name\n(.+?)\n/)[1]
-    subject = text.match(/\nSubject\n(.+?)\n/)[1]
+    caseId = (text.match(/\nCase Number\n(.+?)\n/) || text.match(/Case Number(.+?)Case Severity/))[1]
+    accountName = (text.match(/\nAccount Name\n(.+?)\n/) || text.match(/Account Name(.+?)Edit Account Name/))[1]
+    subject = (text.match(/\nSubject\n(.+?)\n/) || text.match(/Subject(.+?)Edit Subject/))[1]
     flexPage.prepend(containerNode)
     url = window.location.href;
   } else {
