@@ -20,13 +20,13 @@ const f = () => {
       return
     }
     const text = flexPage.innerText
-    if((text.match(/\nCase Number\n(.+?)\n/) === null && text.match(/Case Number(.+?)Case Severity/) === null)
+    if((text.match(/\nCase Number\n(.+?)\n/) === null && text.match(/Show available actionsCase Number(.+?)Case Severity/) === null)
       || (text.match(/\nAccount Name\n(.+?)\n/) === null && text.match(/Account Name(.+?)Edit Account Name/) === null)
       || (text.match(/\nSubject\n(.+?)\n/) === null && text.match(/Subject(.+?)Edit Subject/) === null)) {
       console.log('wait for page ready - text')
       return
     }
-    caseId = (text.match(/\nCase Number\n(.+?)\n/) || text.match(/Case Number(.+?)Case Severity/))[1]
+    caseId = (text.match(/\nCase Number\n(.+?)\n/) || text.match(/Show available actionsCase Number(.+?)Case Severity/))[1]
     accountName = (text.match(/\nAccount Name\n(.+?)\n/) || text.match(/Account Name(.+?)Edit Account Name/))[1]
     subject = (text.match(/\nSubject\n(.+?)\n/) || text.match(/Subject(.+?)Edit Subject/))[1]
     flexPage.prepend(containerNode)
