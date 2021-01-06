@@ -1,8 +1,8 @@
 {
   "license": "MIT",
   "scripts": {
-    "start": "webpack-dev-server --progress --colors",
-    "build": "webpack --progress --colors",
+    "start": "webpack serve --progress",
+    "build": "webpack --progress",
     "release": "rm -rf chrome_extension/* && cp content.js manifest.json ./chrome_extension/ && cp -r icons ./chrome_extension/"
   },
   "dependencies": {
