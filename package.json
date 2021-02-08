@@ -6,7 +6,7 @@
     "release": "rm -rf chrome_extension/* && cp content.js manifest.json ./chrome_extension/ && cp -r icons ./chrome_extension/"
   },
   "dependencies": {
-    "antd": "^4.10.0",
+    "antd": "^4.12.2",
     "localforage": "^1.9.0",
     "ramda": "^0.27.1",
     "react": "^17.0.1",
@@ -16,21 +16,21 @@
     "subx": "^0.9.16"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.10",
-    "@babel/preset-env": "^7.12.11",
-    "@babel/preset-react": "^7.12.10",
-    "@babel/register": "^7.12.10",
+    "@babel/core": "^7.12.13",
+    "@babel/preset-env": "^7.12.13",
+    "@babel/preset-react": "^7.12.13",
+    "@babel/register": "^7.12.13",
     "babel-loader": "^8.2.2",
     "babel-plugin-import": "^1.13.3",
-    "css-loader": "^5.0.1",
+    "css-loader": "^5.0.2",
     "dotenv-override-true": "^6.2.2",
     "file-loader": "^6.2.0",
-    "html-webpack-plugin": "^4.5.1",
+    "html-webpack-plugin": "^5.0.0",
     "standard": "^16.0.3",
     "style-loader": "^2.0.0",
-    "webpack": "^5.11.1",
-    "webpack-cli": "^4.3.1",
-    "webpack-dev-server": "^3.11.1",
+    "webpack": "^5.21.2",
+    "webpack-cli": "^4.5.0",
+    "webpack-dev-server": "^3.11.2",
     "yarn-upgrade-all": "^0.5.4"
   }
 }
