@@ -1,9 +1,9 @@
 {
   "filewatcher.commands": [
     {
-      "match": "content\\.js",
+      "match": "\\.tsx?",
       "isAsync": true,
-      "cmd": "cd '${workspaceRoot}' && yarn release",
+      "cmd": "cd '${workspaceRoot}' && yarn gts fix '${file}'",
       "event": "onFileChange"
     }
   ]

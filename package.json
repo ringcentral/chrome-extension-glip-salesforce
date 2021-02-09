@@ -6,13 +6,13 @@
     "release": "rm -rf chrome_extension/* && cp content.js manifest.json ./chrome_extension/ && cp -r icons ./chrome_extension/"
   },
   "dependencies": {
+    "@rc-ex/core": "^0.6.5",
     "antd": "^4.12.2",
     "localforage": "^1.9.0",
     "ramda": "^0.27.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-subx": "^0.8.4",
-    "ringcentral-js-concise": "^0.8.0",
     "subx": "^0.9.16"
   },
   "devDependencies": {
@@ -20,14 +20,17 @@
     "@babel/preset-env": "^7.12.13",
     "@babel/preset-react": "^7.12.13",
     "@babel/register": "^7.12.13",
+    "@types/node": "^14.14.25",
     "babel-loader": "^8.2.2",
     "babel-plugin-import": "^1.13.3",
     "css-loader": "^5.0.2",
     "dotenv-override-true": "^6.2.2",
     "file-loader": "^6.2.0",
+    "gts": "^3.1.0",
     "html-webpack-plugin": "^5.0.0",
     "standard": "^16.0.3",
     "style-loader": "^2.0.0",
+    "typescript": "^4.1.3",
     "webpack": "^5.21.2",
     "webpack-cli": "^4.5.0",
     "webpack-dev-server": "^3.11.2",

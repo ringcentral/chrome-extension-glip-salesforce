@@ -1,5 +1,5 @@
 import SubX from 'subx'
-import RingCentral from 'ringcentral-js-concise'
+import RingCentral from '@babel/core'
 import localforage from 'localforage'
 import * as R from 'ramda'
 import { message } from 'antd'
