@@ -8,6 +8,7 @@ import {SubxObj} from 'subx/build/src/types';
 import './index.css';
 import Icon from '../icons/icon16.png';
 import {GlipTeamInfo} from '@rc-ex/core/lib/definitions';
+import {authorizeUri} from './store';
 
 export interface Props {
   store: SubxObj;
@@ -38,9 +39,8 @@ class Main extends Component<Props> {
 
 class Login extends Component<Props> {
   render() {
-    const store = this.props.store;
     return (
-      <a href={store.authorizeUri} target="_parent">
+      <a href={authorizeUri} target="_parent">
         <Button size="small" type="primary">
           Login Glip
         </Button>

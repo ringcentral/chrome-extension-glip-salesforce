@@ -119,6 +119,14 @@
     "@nodelib/fs.scandir" "2.1.4"
     fastq "^1.6.0"
 
+"@rc-ex/authorize-uri@^0.6.8":
+  version "0.6.8"
+  resolved "https://registry.yarnpkg.com/@rc-ex/authorize-uri/-/authorize-uri-0.6.8.tgz#4ab0b2fbd61ca85488681880ce937911f0fe9df8"
+  integrity sha512-AuR7XS804T2N2YWEsU7h3N4A1+JdUFNhDgZvQvnz4mcHa6m1YvzeF5Be3NFLib7dI7geHxCrKkxKLx9wr4skwA==
+  dependencies:
+    "@types/urijs" "^1.19.14"
+    urijs "^1.19.5"
+
 "@rc-ex/core@^0.6.5":
   version "0.6.5"
   resolved "https://registry.yarnpkg.com/@rc-ex/core/-/core-0.6.5.tgz#219fdb9e67d59d8623f6a5af53a8beeafcf42cdc"
@@ -254,6 +262,11 @@
   dependencies:
     "@types/prop-types" "*"
     csstype "^3.0.2"
+
+"@types/urijs@^1.19.14":
+  version "1.19.14"
+  resolved "https://registry.yarnpkg.com/@types/urijs/-/urijs-1.19.14.tgz#1c714cfbc23eb9e3f840dd02b7e8284ab85f1a6b"
+  integrity sha512-Ds9OMd4xZqI2zZtoOicASAi0SvFPyNPgkfgPrPeUTQwcJOX1w6Mwkpq8ClI4ZP11nsEI6akvKqRDV+epA8yzRw==
 
 "@typescript-eslint/eslint-plugin@^4.2.0":
   version "4.15.0"
@@ -5791,6 +5804,11 @@ uri-js@^4.2.2:
   integrity sha512-KY9Frmirql91X2Qgjry0Wd4Y+YTdrdZheS8TFwvkbLWf/G5KNJDCh6pKL5OZctEW4+0Baa5idK2ZQuELRwPznQ==
   dependencies:
     punycode "^2.1.0"
+
+urijs@^1.19.5:
+  version "1.19.5"
+  resolved "https://registry.yarnpkg.com/urijs/-/urijs-1.19.5.tgz#119683ab4b2fb0bd637e5ea6dd9117bcac68d3e4"
+  integrity sha512-48z9VGWwdCV5KfizHsE05DWS5fhK6gFlx5MjO7xu0Krc5FGPWzjlXEVV0nPMrdVuP7xmMHiPZ2HoYZwKOFTZOg==
 
 urix@^0.1.0:
   version "0.1.0"

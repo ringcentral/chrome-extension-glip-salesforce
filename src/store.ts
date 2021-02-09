@@ -5,41 +5,46 @@ import * as R from 'ramda';
 import {message} from 'antd';
 import Rest from '@rc-ex/core/lib/Rest';
 import {GlipTeamInfo, TokenInfo} from '@rc-ex/core/lib/definitions';
+import AuthorizeUriExtension from '@rc-ex/authorize-uri';
 
 let urlSearchParams = new URLSearchParams(new URL(window.location.href).search);
-if (
-  !R.isNil(urlSearchParams.get('code')) &&
-  !R.isNil(urlSearchParams.get('state'))
-) {
-  const code = urlSearchParams.get('code')!;
+const code = urlSearchParams.get('code');
+if (code !== null && !R.isNil(urlSearchParams.get('state'))) {
   urlSearchParams = new URLSearchParams(urlSearchParams.get('state')!);
   urlSearchParams.set('code', code);
 }
+
 const redirectUri = window.location.origin + window.location.pathname;
 const rc = new RingCentral({
   clientId: process.env.RINGCENTRAL_CLIENT_ID,
-  clientSecret: process.env.RINGCENTRAL_CLIENT_SECRET,
   server: Rest.productionServer,
 });
+export let authorizeUri = '';
+if (code === null) {
+  const authorizeUriExtension = new AuthorizeUriExtension();
+  rc.installExtension(authorizeUriExtension);
+  authorizeUri = authorizeUriExtension.buildUri({
+    redirect_uri: redirectUri,
+    code_challenge_method: 'S256',
+  });
+  const codeVerifier = authorizeUriExtension.codeVerifier;
+  localforage.setItem('code_verifier', codeVerifier);
+}
 
 const store = SubX.create({
   ready: false,
   token: undefined,
-  authorizeUri: rc.authorizeUri(redirectUri, {
-    state: urlSearchParams.toString(),
-  }),
   existingTeams: [],
   keyword: urlSearchParams.get('keyword'),
   teamName: urlSearchParams.get('teamName'),
   sfTicketUri: urlSearchParams.get('sfTicketUri'),
   async init() {
-    rc.on('tokenChanged', token => {
-      this.token = token;
-    });
-    const code = urlSearchParams.get('code');
-    if (code) {
-      await rc.authorize({code, redirectUri});
-      await localforage.setItem('token', rc.token());
+    if (code !== null) {
+      this.token = await rc.authorize({
+        code,
+        redirect_uri: redirectUri,
+        code_verifier: (await localforage.getItem('code_verifier')) as string,
+      });
     }
   },
   async reload() {
@@ -50,6 +55,7 @@ const store = SubX.create({
     window.location.reload(true);
   },
   async load() {
+    this.token = await rc.refresh(); // refresh token
     const token = await localforage.getItem<TokenInfo>('token');
     if (token === null) {
       return;
