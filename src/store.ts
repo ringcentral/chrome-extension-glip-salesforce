@@ -3,22 +3,24 @@ import RingCentral from '@rc-ex/core';
 import localforage from 'localforage';
 import * as R from 'ramda';
 import {message} from 'antd';
+import Rest from '@rc-ex/core/lib/Rest';
+import {GlipTeamInfo, TokenInfo} from '@rc-ex/core/lib/definitions';
 
 let urlSearchParams = new URLSearchParams(new URL(window.location.href).search);
 if (
   !R.isNil(urlSearchParams.get('code')) &&
   !R.isNil(urlSearchParams.get('state'))
 ) {
-  const code = urlSearchParams.get('code');
-  urlSearchParams = new URLSearchParams(urlSearchParams.get('state'));
+  const code = urlSearchParams.get('code')!;
+  urlSearchParams = new URLSearchParams(urlSearchParams.get('state')!);
   urlSearchParams.set('code', code);
 }
 const redirectUri = window.location.origin + window.location.pathname;
-const rc = new RingCentral(
-  process.env.RINGCENTRAL_CLIENT_ID,
-  process.env.RINGCENTRAL_CLIENT_SECRET,
-  RingCentral.PRODUCTION_SERVER
-);
+const rc = new RingCentral({
+  clientId: process.env.RINGCENTRAL_CLIENT_ID,
+  clientSecret: process.env.RINGCENTRAL_CLIENT_SECRET,
+  server: Rest.productionServer,
+});
 
 const store = SubX.create({
   ready: false,
@@ -48,31 +50,35 @@ const store = SubX.create({
     window.location.reload(true);
   },
   async load() {
-    rc.token(await localforage.getItem('token'));
-    if (R.isNil(rc.token())) {
+    const token = await localforage.getItem<TokenInfo>('token');
+    if (token === null) {
       return;
     }
+    rc.token = token;
     try {
       // make sure token is still usable
       await rc.get('/restapi/v1.0/account/~/extension/~');
     } catch (e) {
       if (
         e.data &&
-        (e.data.errors || []).some(error => /\btoken\b/i.test(error.message))
+        (e.data.errors || []).some((error: any) =>
+          /\btoken\b/i.test(error.message)
+        )
       ) {
         // invalid token
         await localforage.clear();
         window.location.reload(false);
       }
     }
-    const teams = (await localforage.getItem('teams')) || {};
+    const teams: {[key: string]: GlipTeamInfo} =
+      (await localforage.getItem('teams')) || {};
     const prevPageToken = await localforage.getItem('prevPageToken');
     let r = await rc.get('/restapi/v1.0/glip/teams', {
       params: {recordCount: 250, pageToken: prevPageToken},
     });
     console.log(r.data);
-    for (const team of r.data.records) {
-      teams[team.id] = team;
+    for (const team of r.data.records as GlipTeamInfo[]) {
+      teams[team.id!] = team;
     }
     while (r.data.navigation.prevPageToken) {
       await localforage.setItem(
@@ -92,14 +98,14 @@ const store = SubX.create({
     if (!R.isNil(this.keyword)) {
       const regex = new RegExp(`\\b${this.keyword}\\b`, 'i');
       for (const key of Object.keys(teams)) {
-        if (regex.test(teams[key].name)) {
+        if (regex.test(teams[key].name ?? '')) {
           existingTeams.push(teams[key]);
         }
       }
     }
     this.existingTeams = existingTeams;
   },
-  async createTeam(teamName) {
+  async createTeam(teamName: string) {
     try {
       const r = await rc.post('/restapi/v1.0/glip/teams', {
         public: true,
@@ -124,7 +130,7 @@ const store = SubX.create({
       }
     }
   },
-  async openTeam(teamId, uriPrefix) {
+  async openTeam(teamId: string, uriPrefix: string) {
     try {
       await rc.post(`/restapi/v1.0/glip/teams/${teamId}/join`);
     } catch (e) {

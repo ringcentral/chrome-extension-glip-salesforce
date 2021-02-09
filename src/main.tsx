@@ -3,11 +3,17 @@ import {Component} from 'react-subx';
 import * as R from 'ramda';
 import {Spin, Button} from 'antd';
 import {ReloadOutlined} from '@ant-design/icons';
+import {SubxObj} from 'subx/build/src/types';
 
 import './index.css';
 import Icon from '../icons/icon16.png';
+import {GlipTeamInfo} from '@rc-ex/core/lib/definitions';
 
-class App extends Component {
+export interface Props {
+  store: SubxObj;
+}
+
+class App extends Component<Props> {
   render() {
     const store = this.props.store;
     return (
@@ -19,7 +25,7 @@ class App extends Component {
   }
 }
 
-class Main extends Component {
+class Main extends Component<Props> {
   render() {
     const store = this.props.store;
     return R.isNil(store.token) ? (
@@ -30,7 +36,7 @@ class Main extends Component {
   }
 }
 
-class Login extends Component {
+class Login extends Component<Props> {
   render() {
     const store = this.props.store;
     return (
@@ -43,7 +49,7 @@ class Login extends Component {
   }
 }
 
-class Home extends Component {
+class Home extends Component<Props> {
   render() {
     const store = this.props.store;
     return (
@@ -53,7 +59,7 @@ class Home extends Component {
         ) : (
           <CreateTeam store={store} />
         )}
-        <a onClick={e => store.reload()}>
+        <a onClick={() => store.reload()}>
           <ReloadOutlined id="reload-icon" />
         </a>
       </>
@@ -61,16 +67,22 @@ class Home extends Component {
   }
 }
 
-class Teams extends Component {
+class Teams extends Component<Props> {
   render() {
     const store = this.props.store;
     return store.existingTeams
-      .map(team => <Team key={team.id} team={team} store={store} />)
-      .reduce((prev, curr) => [prev, ' | ', curr]);
+      .map((team: GlipTeamInfo) => (
+        <Team key={team.id} team={team} store={store} />
+      ))
+      .reduce((prev: Team, curr: Team) => [prev, ' | ', curr]);
   }
 }
 
-class Team extends Component {
+export interface TeamProps {
+  store: SubxObj;
+  team: GlipTeamInfo;
+}
+class Team extends Component<TeamProps> {
   render() {
     const {team, store} = this.props;
     return (
@@ -98,16 +110,16 @@ class Team extends Component {
   }
 }
 
-class CreateTeam extends Component {
+class CreateTeam extends Component<Props> {
   render() {
     const store = this.props.store;
     return (
       <Button
         size="small"
         type="primary"
-        onClick={e => store.createTeam(store.teamName)}
+        onClick={() => store.createTeam(store.teamName)}
       >
-        Create a Glip team with name "{store.teamName}"
+        Create a Glip team with name &quot;{store.teamName}&quot;
       </Button>
     );
   }

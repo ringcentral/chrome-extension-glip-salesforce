@@ -1,11 +1,15 @@
 {
   "license": "MIT",
+  "engines": {
+    "node": ">=14.x"
+  },
   "scripts": {
     "start": "webpack serve --progress",
     "build": "webpack --progress",
     "release": "rm -rf chrome_extension/* && cp content.js manifest.json ./chrome_extension/ && cp -r icons ./chrome_extension/"
   },
   "dependencies": {
+    "@ant-design/icons": "^4.4.0",
     "@rc-ex/core": "^0.6.5",
     "antd": "^4.12.2",
     "localforage": "^1.9.0",
