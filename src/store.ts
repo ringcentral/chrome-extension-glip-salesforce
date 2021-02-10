@@ -55,12 +55,18 @@ const store = SubX.create({
     window.location.reload(true);
   },
   async load() {
-    this.token = await rc.refresh(); // refresh token
     const token = await localforage.getItem<TokenInfo>('token');
     if (token === null) {
       return;
     }
     rc.token = token;
+    try {
+      this.token = await rc.refresh(); // refresh token
+    } catch (e) {
+      // invalid token
+      await localforage.clear();
+      window.location.reload(false);
+    }
     try {
       // make sure token is still usable
       await rc.get('/restapi/v1.0/account/~/extension/~');
@@ -80,7 +86,8 @@ const store = SubX.create({
       (await localforage.getItem('teams')) || {};
     const prevPageToken = await localforage.getItem('prevPageToken');
     let r = await rc.get('/restapi/v1.0/glip/teams', {
-      params: {recordCount: 250, pageToken: prevPageToken},
+      recordCount: 250,
+      pageToken: prevPageToken,
     });
     console.log(r.data);
     for (const team of r.data.records as GlipTeamInfo[]) {
@@ -92,7 +99,8 @@ const store = SubX.create({
         r.data.navigation.prevPageToken
       );
       r = await rc.get('/restapi/v1.0/glip/teams', {
-        params: {recordCount: 250, pageToken: r.data.navigation.prevPageToken},
+        recordCount: 250,
+        pageToken: r.data.navigation.prevPageToken,
       });
       console.log(r.data);
       for (const team of r.data.records) {

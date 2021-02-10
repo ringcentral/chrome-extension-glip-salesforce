@@ -1,8 +1,9 @@
+/* eslint-disable node/no-unpublished-require */
 /* eslint-disable node/no-unpublished-import */
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import path from 'path';
 import dotenv from 'dotenv-override-true';
-import {DefinePlugin} from 'webpack';
+import {DefinePlugin, ProvidePlugin} from 'webpack';
 
 const config = {
   mode: 'development',
@@ -34,6 +35,9 @@ const config = {
     new HtmlWebpackPlugin({title: 'Salesforce to Glip Router'}),
     new DefinePlugin({
       'process.env': JSON.stringify(dotenv.config().parsed),
+    }),
+    new ProvidePlugin({
+      process: 'process/browser',
     }),
   ],
   resolve: {
