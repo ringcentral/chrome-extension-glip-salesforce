@@ -6,7 +6,6 @@ import dotenv from 'dotenv-override-true';
 import {DefinePlugin, ProvidePlugin} from 'webpack';
 
 const config = {
-  mode: 'development',
   devtool: 'source-map',
   entry: './src/index.tsx',
   output: {

@@ -25,10 +25,8 @@ yarn install
 ### Start the web site in dev mode
 
 ```
-yarn start
+yarn serve
 ```
-
-Then navigate to http://localhost:8080/
 
 
 ### Build the web site for prod
