@@ -1,13 +1,12 @@
 import React from 'react';
 import {Component} from 'react-subx';
-import * as R from 'ramda';
 import {Spin, Button} from 'antd';
 import {ReloadOutlined} from '@ant-design/icons';
 import {SubxObj} from 'subx/build/src/types';
+import {GlipTeamInfo} from '@rc-ex/core/lib/definitions';
 
 import './index.css';
 import Icon from '../icons/icon16.png';
-import {GlipTeamInfo} from '@rc-ex/core/lib/definitions';
 import {authorizeUri} from './store';
 
 export interface Props {
@@ -29,11 +28,7 @@ class App extends Component<Props> {
 class Main extends Component<Props> {
   render() {
     const store = this.props.store;
-    return R.isNil(store.token) ? (
-      <Login store={store} />
-    ) : (
-      <Home store={store} />
-    );
+    return !store.token ? <Login store={store} /> : <Home store={store} />;
   }
 }
 

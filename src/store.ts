@@ -1,7 +1,6 @@
 import SubX from 'subx';
 import RingCentral from '@rc-ex/core';
 import localforage from 'localforage';
-import * as R from 'ramda';
 import {message} from 'antd';
 import Rest from '@rc-ex/core/lib/Rest';
 import {GlipTeamInfo, TokenInfo} from '@rc-ex/core/lib/definitions';
@@ -9,8 +8,9 @@ import AuthorizeUriExtension from '@rc-ex/authorize-uri';
 
 let urlSearchParams = new URLSearchParams(new URL(window.location.href).search);
 const code = urlSearchParams.get('code');
-if (code !== null && !R.isNil(urlSearchParams.get('state'))) {
-  urlSearchParams = new URLSearchParams(urlSearchParams.get('state')!);
+const state = urlSearchParams.get('state');
+if (code !== null && state !== null) {
+  urlSearchParams = new URLSearchParams(state);
   urlSearchParams.set('code', code);
 }
 
@@ -109,7 +109,7 @@ const store = SubX.create({
       await localforage.setItem('teams', teams);
     }
     const existingTeams = [];
-    if (!R.isNil(this.keyword)) {
+    if (this.keyword !== null) {
       const regex = new RegExp(`\\b${this.keyword}\\b`, 'i');
       for (const key of Object.keys(teams)) {
         if (regex.test(teams[key].name ?? '')) {
