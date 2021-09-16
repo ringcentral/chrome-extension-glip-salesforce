@@ -32,7 +32,9 @@ const config = {
     ],
   },
   plugins: [
-    new HtmlWebpackPlugin({title: 'Salesforce to Glip Router'}),
+    new HtmlWebpackPlugin({
+      title: 'Salesforce to RingCentral Team Messaging Router',
+    }),
     new DefinePlugin({
       'process.env': JSON.stringify(dotenv.config().parsed),
     }),

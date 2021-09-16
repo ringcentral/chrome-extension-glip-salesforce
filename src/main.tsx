@@ -42,7 +42,7 @@ class Login extends Component<Props> {
     return (
       <a href={authorizeUri} target="_parent">
         <Button size="small" type="primary">
-          Login Glip
+          Login RingCentral Team Messaging
         </Button>
       </a>
     );
@@ -119,7 +119,8 @@ class CreateTeam extends Component<Props> {
         type="primary"
         onClick={() => store.createTeam(store.teamName)}
       >
-        Create a Glip team with name &quot;{store.teamName}&quot;
+        Create a RingCentral Team Messaging team with name &quot;
+        {store.teamName}&quot;
       </Button>
     );
   }

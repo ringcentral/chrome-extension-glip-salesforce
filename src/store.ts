@@ -127,7 +127,7 @@ const store = SubX.create({
         description: teamName,
       });
       await rc.post(`/restapi/v1.0/glip/chats/${r.data.id}/posts`, {
-        text: `This Team is created for [Salesforce ticket #${this.keyword}](${this.sfTicketUri}) by [Glip Salesforce Chrome extension](https://chrome.google.com/webstore/detail/glip-salesforce/gcmccmiceedebolmgjddhklghkaejbei).`,
+        text: `This Team is created for [Salesforce ticket #${this.keyword}](${this.sfTicketUri}) by [RingCentral Team Messaging Salesforce Chrome extension](https://chrome.google.com/webstore/detail/glip-salesforce/gcmccmiceedebolmgjddhklghkaejbei).`,
       });
       window.location.reload(false);
     } catch (e) {
