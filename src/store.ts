@@ -52,7 +52,7 @@ const store = SubX.create({
     const token = await localforage.getItem('token');
     await localforage.clear();
     await localforage.setItem('token', token);
-    window.location.reload(true);
+    window.location.reload();
   },
   async load() {
     const token = await localforage.getItem<TokenInfo>('token');
@@ -65,7 +65,7 @@ const store = SubX.create({
     } catch (e) {
       // invalid token
       await localforage.clear();
-      window.location.reload(false);
+      window.location.reload();
     }
     try {
       // make sure token is still usable
@@ -79,7 +79,7 @@ const store = SubX.create({
       ) {
         // invalid token
         await localforage.clear();
-        window.location.reload(false);
+        window.location.reload();
       }
     }
     const teams: {[key: string]: GlipTeamInfo} =
@@ -129,7 +129,7 @@ const store = SubX.create({
       await rc.post(`/restapi/v1.0/glip/chats/${r.data.id}/posts`, {
         text: `This Team is created for [Salesforce ticket #${this.keyword}](${this.sfTicketUri}) by [RingCentral Team Messaging Salesforce Chrome extension](https://chrome.google.com/webstore/detail/glip-salesforce/gcmccmiceedebolmgjddhklghkaejbei).`,
       });
-      window.location.reload(false);
+      window.location.reload();
     } catch (e) {
       console.log(e);
       if (
