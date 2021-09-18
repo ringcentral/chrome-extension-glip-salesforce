@@ -6,6 +6,7 @@ import {GlipTeamInfo, TokenInfo} from '@rc-ex/core/lib/definitions';
 import AuthorizeUriExtension from '@rc-ex/authorize-uri';
 import {useProxy, autoRun} from '@tylerlong/use-proxy';
 import RestException from '@rc-ex/core/lib/RestException';
+import {classToPlain} from 'class-transformer';
 
 let urlSearchParams = new URLSearchParams(new URL(window.location.href).search);
 const code = urlSearchParams.get('code');
@@ -67,6 +68,7 @@ export class Store {
     try {
       this.token = await rc.refresh(); // refresh token
     } catch (e) {
+      console.log(e);
       // invalid token
       await localforage.clear();
       window.location.reload();
@@ -75,6 +77,7 @@ export class Store {
       // make sure token is still usable
       await rc.get('/restapi/v1.0/account/~/extension/~');
     } catch (e) {
+      console.log(e);
       // invalid token
       await localforage.clear();
       window.location.reload();
@@ -160,7 +163,7 @@ const store = useProxy(new Store());
 
 const autoRunner = autoRun(store, () => {
   if (store.token) {
-    localforage.setItem('token', JSON.stringify(store.token));
+    localforage.setItem('token', classToPlain(store.token));
   }
 });
 autoRunner.start();
