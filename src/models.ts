@@ -5,6 +5,7 @@ import localforage from 'localforage';
 import RingCentral from '@rc-ex/core';
 import Rest from '@rc-ex/core/lib/Rest';
 import AuthorizeUriExtension from '@rc-ex/authorize-uri';
+import {plainToClass} from 'class-transformer';
 
 let urlSearchParams = new URLSearchParams(new URL(window.location.href).search);
 const code = urlSearchParams.get('code');
@@ -113,8 +114,8 @@ export class Store {
       pageToken: prevPageToken,
     });
     console.log(r.data);
-    for (const team of r.data.records as Team[]) {
-      teams[team.id!] = team;
+    for (const team of r.data.records) {
+      teams[team.id!] = plainToClass(Team, team);
     }
     while (r.data.navigation.prevPageToken) {
       await localforage.setItem(
@@ -127,7 +128,7 @@ export class Store {
       });
       console.log(r.data);
       for (const team of r.data.records) {
-        teams[team.id] = team;
+        teams[team.id] = plainToClass(Team, team);
       }
       await localforage.setItem('teams', teams);
     }

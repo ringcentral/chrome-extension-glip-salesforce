@@ -6,7 +6,7 @@
   "scripts": {
     "serve": "webpack serve --progress --mode development --open",
     "build": "webpack --progress --mode production",
-    "release": "rm -rf chrome_extension/* && cp content.js manifest.json ./chrome_extension/ && cp -r icons ./chrome_extension/"
+    "release": "mkdir -p chrome_extension && rm -rf chrome_extension/* && cp content.js manifest.json ./chrome_extension/ && cp -r icons ./chrome_extension/"
   },
   "dependencies": {
     "@ant-design/icons": "^4.6.4",
