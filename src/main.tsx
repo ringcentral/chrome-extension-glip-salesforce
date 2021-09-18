@@ -6,7 +6,7 @@ import {GlipTeamInfo} from '@rc-ex/core/lib/definitions';
 
 import './index.css';
 import Icon from '../icons/icon16.png';
-import {authorizeUri, Store} from './store';
+import {authorizeUri, Store} from './models';
 
 class App extends Component<{store: Store}> {
   render() {
