@@ -2,11 +2,10 @@ import React, {ReactElement} from 'react';
 import {Component} from '@tylerlong/use-proxy/build/react';
 import {Spin, Button} from 'antd';
 import {ReloadOutlined} from '@ant-design/icons';
-import {GlipTeamInfo} from '@rc-ex/core/lib/definitions';
 
 import './index.css';
 import Icon from '../icons/icon16.png';
-import {authorizeUri, Store} from './models';
+import {authorizeUri, Store, Team} from './models';
 
 class App extends Component<{store: Store}> {
   render() {
@@ -62,7 +61,7 @@ class Teams extends Component<{store: Store}> {
     const store = this.props.store;
     const components: (ReactElement | string)[] = [];
     store.existingTeams.forEach(team => {
-      components.push(<Team key={team.id} team={team} store={store} />);
+      components.push(<TeamComponent key={team.id} team={team} />);
       components.push('  ');
     });
     components.pop();
@@ -70,26 +69,18 @@ class Teams extends Component<{store: Store}> {
   }
 }
 
-class Team extends Component<{store: Store; team: GlipTeamInfo}> {
+class TeamComponent extends Component<{team: Team}> {
   render() {
-    const {team, store} = this.props;
+    const {team} = this.props;
     return (
       <>
         {team.name}
         &nbsp;[
-        <a
-          rel="noopener noreferrer"
-          onClick={() => store.openTeam(team.id!, 'rcapp://chat/r?groupid=')}
-        >
+        <a rel="noopener noreferrer" onClick={() => team.open('app')}>
           App
         </a>
         ] &nbsp;[
-        <a
-          rel="noopener noreferrer"
-          onClick={() =>
-            store.openTeam(team.id!, 'https://app.ringcentral.com/messages/')
-          }
-        >
+        <a rel="noopener noreferrer" onClick={() => team.open('web')}>
           Web
         </a>
         ]

@@ -32,10 +32,34 @@ if (code === null) {
   localforage.setItem('code_verifier', codeVerifier);
 }
 
+export class Team extends GlipTeamInfo {
+  async open(target: 'app' | 'web') {
+    try {
+      await rc.post(`/restapi/v1.0/glip/teams/${this.id}/join`);
+    } catch (e) {
+      // Join team failed, the team is private. And you are already a member, otherwise you won't see the team at all.
+    } finally {
+      switch (target) {
+        case 'app': {
+          window.window.open(`rcapp://chat/r?groupid=${this.id}`, '_blank');
+          break;
+        }
+        case 'web': {
+          window.window.open(
+            `https://app.ringcentral.com/messages/${this.id}`,
+            '_blank'
+          );
+          break;
+        }
+      }
+    }
+  }
+}
+
 export class Store {
   ready = false;
   token?: TokenInfo = undefined;
-  existingTeams: GlipTeamInfo[] = [];
+  existingTeams: Team[] = [];
   keyword = urlSearchParams.get('keyword') ?? '';
   teamName = urlSearchParams.get('teamName') ?? '';
   sfTicketUri = urlSearchParams.get('sfTicketUri') ?? '';
@@ -81,7 +105,7 @@ export class Store {
       await localforage.clear();
       window.location.reload();
     }
-    const teams: {[key: string]: GlipTeamInfo} =
+    const teams: {[key: string]: Team} =
       (await localforage.getItem('teams')) || {};
     const prevPageToken = await localforage.getItem('prevPageToken');
     let r = await rc.get('/restapi/v1.0/glip/teams', {
@@ -89,7 +113,7 @@ export class Store {
       pageToken: prevPageToken,
     });
     console.log(r.data);
-    for (const team of r.data.records as GlipTeamInfo[]) {
+    for (const team of r.data.records as Team[]) {
       teams[team.id!] = team;
     }
     while (r.data.navigation.prevPageToken) {
@@ -144,16 +168,6 @@ export class Store {
           0
         );
       }
-    }
-  }
-
-  async openTeam(teamId: string, uriPrefix: string) {
-    try {
-      await rc.post(`/restapi/v1.0/glip/teams/${teamId}/join`);
-    } catch (e) {
-      // Join team failed, the team is private. And you are already a member, otherwise you won't see the team at all.
-    } finally {
-      window.window.open(`${uriPrefix}${teamId}`, '_blank');
     }
   }
 }
