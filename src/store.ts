@@ -1,10 +1,11 @@
-import SubX from 'subx';
 import RingCentral from '@rc-ex/core';
 import localforage from 'localforage';
 import {message} from 'antd';
 import Rest from '@rc-ex/core/lib/Rest';
 import {GlipTeamInfo, TokenInfo} from '@rc-ex/core/lib/definitions';
 import AuthorizeUriExtension from '@rc-ex/authorize-uri';
+import {useProxy, autoRun} from '@tylerlong/use-proxy';
+import RestException from '@rc-ex/core/lib/RestException';
 
 let urlSearchParams = new URLSearchParams(new URL(window.location.href).search);
 const code = urlSearchParams.get('code');
@@ -31,13 +32,14 @@ if (code === null) {
   localforage.setItem('code_verifier', codeVerifier);
 }
 
-const store = SubX.create({
-  ready: false,
-  token: undefined,
-  existingTeams: [],
-  keyword: urlSearchParams.get('keyword'),
-  teamName: urlSearchParams.get('teamName'),
-  sfTicketUri: urlSearchParams.get('sfTicketUri'),
+export class Store {
+  ready = false;
+  token?: TokenInfo = undefined;
+  existingTeams: GlipTeamInfo[] = [];
+  keyword = urlSearchParams.get('keyword') ?? '';
+  teamName = urlSearchParams.get('teamName') ?? '';
+  sfTicketUri = urlSearchParams.get('sfTicketUri') ?? '';
+
   async init() {
     if (code !== null) {
       this.token = await rc.authorize({
@@ -46,14 +48,16 @@ const store = SubX.create({
         code_verifier: (await localforage.getItem('code_verifier')) as string,
       });
     }
-  },
+  }
+
   async reload() {
     // remove all data except token
     const token = await localforage.getItem('token');
     await localforage.clear();
     await localforage.setItem('token', token);
     window.location.reload();
-  },
+  }
+
   async load() {
     const token = await localforage.getItem<TokenInfo>('token');
     if (token === null) {
@@ -71,16 +75,9 @@ const store = SubX.create({
       // make sure token is still usable
       await rc.get('/restapi/v1.0/account/~/extension/~');
     } catch (e) {
-      if (
-        e.data &&
-        (e.data.errors || []).some((error: any) =>
-          /\btoken\b/i.test(error.message)
-        )
-      ) {
-        // invalid token
-        await localforage.clear();
-        window.location.reload();
-      }
+      // invalid token
+      await localforage.clear();
+      window.location.reload();
     }
     const teams: {[key: string]: GlipTeamInfo} =
       (await localforage.getItem('teams')) || {};
@@ -118,7 +115,8 @@ const store = SubX.create({
       }
     }
     this.existingTeams = existingTeams;
-  },
+  }
+
   async createTeam(teamName: string) {
     try {
       const r = await rc.post('/restapi/v1.0/glip/teams', {
@@ -132,10 +130,12 @@ const store = SubX.create({
       window.location.reload();
     } catch (e) {
       console.log(e);
+      const re = e as RestException;
+      const data = re.response.data;
       if (
-        e.data &&
-        e.data.errors &&
-        e.data.errors[0].message.includes('already used by another team')
+        data &&
+        data.errors &&
+        data.errors[0].message.includes('already used by another team')
       ) {
         message.error(
           'Some one else already created this team but it is private, please ask the creator to add you.',
@@ -143,7 +143,8 @@ const store = SubX.create({
         );
       }
     }
-  },
+  }
+
   async openTeam(teamId: string, uriPrefix: string) {
     try {
       await rc.post(`/restapi/v1.0/glip/teams/${teamId}/join`);
@@ -152,13 +153,16 @@ const store = SubX.create({
     } finally {
       window.window.open(`${uriPrefix}${teamId}`, '_blank');
     }
-  },
-});
+  }
+}
 
-SubX.autoRun(store, async () => {
+const store = useProxy(new Store());
+
+const autoRunner = autoRun(store, () => {
   if (store.token) {
-    await localforage.setItem('token', store.token.toJSON());
+    localforage.setItem('token', JSON.stringify(store.token));
   }
 });
+autoRunner.start();
 
 export default store;

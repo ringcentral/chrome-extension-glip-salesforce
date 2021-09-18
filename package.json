@@ -12,12 +12,11 @@
     "@ant-design/icons": "^4.6.4",
     "@rc-ex/authorize-uri": "^0.8.1",
     "@rc-ex/core": "^0.10.0",
+    "@tylerlong/use-proxy": "^0.7.4",
     "antd": "^4.16.13",
     "localforage": "^1.10.0",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-subx": "^0.9.0",
-    "subx": "^0.10.1"
+    "react-dom": "^17.0.2"
   },
   "devDependencies": {
     "@types/node": "^16.9.1",
