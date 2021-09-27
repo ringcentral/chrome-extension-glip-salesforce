@@ -115,7 +115,7 @@ export class Store {
     });
     console.log(r.data);
     for (const team of r.data.records) {
-      teams[team.id!] = plainToClass(Team, team);
+      teams[team.id!] = team;
     }
     while (r.data.navigation.prevPageToken) {
       await localforage.setItem(
@@ -128,7 +128,7 @@ export class Store {
       });
       console.log(r.data);
       for (const team of r.data.records) {
-        teams[team.id] = plainToClass(Team, team);
+        teams[team.id] = team;
       }
       await localforage.setItem('teams', teams);
     }
@@ -141,7 +141,7 @@ export class Store {
         }
       }
     }
-    this.existingTeams = existingTeams;
+    this.existingTeams = plainToClass(Team, existingTeams);
   }
 
   async createTeam(teamName: string) {
