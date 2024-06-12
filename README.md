@@ -23,6 +23,8 @@ The workaround is to go to chrome://flags/#third-party-storage-partitioning and 
 
 We may figure out a better way in the future, but for now, above is the workaround.
 
+Proposed solution (for developer of this repo only): Let user login inside the iframe, do not open a new window. Because the new window doesn't share storage with the iframe at all. Problem is: the iframe is too small to show the login page. We need to find a way to make the iframe bigger when login and make it smaller after login.
+
 ## For developers
 
 ### Setup
