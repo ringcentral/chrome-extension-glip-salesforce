@@ -17,7 +17,7 @@ Later I got some feedbacks that it's not good to use my personal GitHub Pages do
 ## Known issues
 2024-06-12 I found that the extension is not working anymore. 
 
-After investigation, I found that the root cause is the [Storage Partioning](https://developers.google.com/privacy-sandbox/3pcd/storage-partitioning) feature. A web page embedded in an iframe doesn't share the same storage with the same web page sandalone. This is a good feature for privacy, but it breaks the extension.
+After investigation, I found that the root cause is the [Storage Partioning](https://developers.google.com/privacy-sandbox/3pcd/storage-partitioning) feature. A web page embedded in an iframe doesn't share the same storage with the same web page standalone. This is a good feature for privacy, but it breaks the extension.
 
 The workaround is to go to chrome://flags/#third-party-storage-partitioning and disable the feature. After that you need to relaunch the browser. The extension will work again.
 
