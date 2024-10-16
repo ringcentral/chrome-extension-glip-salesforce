@@ -27,6 +27,7 @@ const Main = auto((props: { store: Store }) => {
 });
 
 const Login = auto(() => {
+  let eventHandler: (event: MessageEvent) => void;
   const login = () => {
     const rc = new RingCentral({
       clientId: process.env.RINGCENTRAL_CLIENT_ID_SALESFORCE_GLIP_EXTENSION,
@@ -34,37 +35,31 @@ const Login = auto(() => {
     });
     const authorizeUriExtension = new AuthorizeUriExtension();
     rc.installExtension(authorizeUriExtension);
-    const redirectUri = window.location.origin + window.location.pathname;
+    const redirectUri =
+      window.location.origin + window.location.pathname + 'callback.html';
     const authorizeUri = authorizeUriExtension.buildUri({
       redirect_uri: redirectUri,
       code_challenge_method: 'S256',
     });
     const codeVerifier = authorizeUriExtension.codeVerifier;
-    const popupWindow = window.open(
-      authorizeUri,
-      'LoginPopup',
-      'width=600,height=600',
-    );
-    const handle = setInterval(async () => {
-      if (popupWindow.closed) {
-        clearInterval(handle);
-        return;
-      }
-      // Parse the URL and check if it contains the "code" parameter
-      const urlParams = new URLSearchParams(popupWindow.location.search);
-      const code = urlParams.get('code');
-      if (code) {
-        clearInterval(handle);
-        popupWindow.close();
+    window.open(authorizeUri, 'LoginPopup', 'width=600,height=600');
+    if (eventHandler) {
+      window.removeEventListener('message', eventHandler);
+    }
+    eventHandler = async (event: MessageEvent) => {
+      if (event.data.type === 'code') {
+        window.removeEventListener('message', eventHandler);
+        eventHandler = undefined;
         const token = await rc.authorize({
-          code,
+          code: event.data.code,
           redirect_uri: redirectUri,
           code_verifier: codeVerifier,
         });
         await localforage.setItem('token', token);
         window.location.reload();
       }
-    }, 100);
+    };
+    window.addEventListener('message', eventHandler);
   };
   return (
     <Button type="primary" onClick={() => login()}>
