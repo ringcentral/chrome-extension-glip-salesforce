@@ -1,11 +1,11 @@
-import {message} from 'antd';
-import {GlipTeamInfo, TokenInfo} from '@rc-ex/core/lib/definitions';
-import RestException from '@rc-ex/core/lib/RestException';
-import localforage from 'localforage';
-import RingCentral from '@rc-ex/core';
-import Rest from '@rc-ex/core/lib/Rest';
 import AuthorizeUriExtension from '@rc-ex/authorize-uri';
-import {plainToClass} from 'class-transformer';
+import RingCentral from '@rc-ex/core';
+import { GlipTeamInfo, TokenInfo } from '@rc-ex/core/lib/definitions';
+import Rest from '@rc-ex/core/lib/Rest';
+import RestException from '@rc-ex/core/lib/RestException';
+import { message } from 'antd';
+import { plainToClass } from 'class-transformer';
+import localforage from 'localforage';
 
 let urlSearchParams = new URLSearchParams(new URL(window.location.href).search);
 const code = urlSearchParams.get('code');
@@ -38,6 +38,7 @@ export class Team extends GlipTeamInfo {
     try {
       await rc.post(`/restapi/v1.0/glip/teams/${this.id}/join`);
     } catch (e) {
+      console.log(e);
       // Join team failed, the team is private. And you are already a member, otherwise you won't see the team at all.
     } finally {
       switch (target) {
@@ -48,7 +49,7 @@ export class Team extends GlipTeamInfo {
         case 'web': {
           window.window.open(
             `https://app.ringcentral.com/messages/${this.id}`,
-            '_blank'
+            '_blank',
           );
           break;
         }
@@ -106,7 +107,7 @@ export class Store {
       await localforage.clear();
       window.location.reload();
     }
-    const teams: {[key: string]: Team} =
+    const teams: { [key: string]: Team } =
       (await localforage.getItem('teams')) || {};
     const prevPageToken = await localforage.getItem('prevPageToken');
     let r = await rc.get('/restapi/v1.0/glip/teams', {
@@ -120,7 +121,7 @@ export class Store {
     while (r.data.navigation.prevPageToken) {
       await localforage.setItem(
         'prevPageToken',
-        r.data.navigation.prevPageToken
+        r.data.navigation.prevPageToken,
       );
       r = await rc.get('/restapi/v1.0/glip/teams', {
         recordCount: 250,
@@ -166,7 +167,7 @@ export class Store {
       ) {
         message.error(
           'Some one else already created this team but it is private, please ask the creator to add you.',
-          0
+          0,
         );
       }
     }

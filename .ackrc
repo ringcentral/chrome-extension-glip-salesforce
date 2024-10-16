@@ -1,3 +1,4 @@
 --ignore-dir=docs
+--ignore-dir=build
 --ignore-dir=chrome_extension
 --ignore-file=match:/^yarn\.lock$/

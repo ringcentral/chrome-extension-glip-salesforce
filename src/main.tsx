@@ -1,46 +1,39 @@
-import React, {ReactElement} from 'react';
-import {Component} from '@tylerlong/use-proxy/build/react';
-import {Spin, Button} from 'antd';
-import {ReloadOutlined} from '@ant-design/icons';
+import { ReloadOutlined } from '@ant-design/icons';
+import { Button, Spin } from 'antd';
+import React, { ReactElement } from 'react';
+import {auto} from 'manate/react';
 
-import './index.css';
 import Icon from '../icons/icon16.png';
-import {authorizeUri, Store, Team} from './models';
+import { authorizeUri, Store, Team } from './models';
 
-class App extends Component<{store: Store}> {
-  render() {
-    const store = this.props.store;
-    return (
-      <>
-        <img src={Icon} id="glip-icon" />
-        {store.ready ? <Main store={store} /> : <Spin size="small" />}
-      </>
-    );
-  }
-}
+const App = auto((props: {store: Store}) => {
+  const store = props.store;
+  return (
+    <>
+      <img src={Icon} id="glip-icon" />
+      {store.ready ? <Main store={store} /> : <Spin size="small" />}
+    </>
+  );
+});
 
-class Main extends Component<{store: Store}> {
-  render() {
-    const store = this.props.store;
-    return !store.token ? <Login store={store} /> : <Home store={store} />;
-  }
-}
+const Main = auto((props: {store: Store}) => {
+  const store = props.store;
+  return !store.token ? <Login /> : <Home store={store} />;
+});
 
-class Login extends Component<{store: Store}> {
-  render() {
-    return (
-      <a href={authorizeUri}>
-        <Button size="large" type="primary" block>
-          Login RingCentral Team Messaging
-        </Button>
-      </a>
-    );
-  }
-}
 
-class Home extends Component<{store: Store}> {
-  render() {
-    const store = this.props.store;
+const Login = auto(() => {
+  return (
+    <a href={authorizeUri}>
+      <Button size="large" type="primary" block>
+        Login RingCentral Team Messaging
+      </Button>
+    </a>
+  );
+});
+
+const Home = auto((props: {store: Store}) => {
+  const store = props.store;
     return (
       <>
         {store.existingTeams.length > 0 ? (
@@ -53,25 +46,21 @@ class Home extends Component<{store: Store}> {
         </a>
       </>
     );
-  }
-}
+});
 
-class Teams extends Component<{store: Store}> {
-  render() {
-    const store = this.props.store;
+const Teams = auto((props: {store: Store}) => {
+  const store = props.store;
     const components: (ReactElement | string)[] = [];
-    store.existingTeams.forEach(team => {
+    store.existingTeams.forEach((team) => {
       components.push(<TeamComponent key={team.id} team={team} />);
       components.push('  ');
     });
     components.pop();
     return components;
-  }
-}
+});
 
-class TeamComponent extends Component<{team: Team}> {
-  render() {
-    const {team} = this.props;
+const TeamComponent = auto((props: {team: Team}) => {
+  const { team } = props;
     return (
       <>
         {team.name}
@@ -86,23 +75,20 @@ class TeamComponent extends Component<{team: Team}> {
         ]
       </>
     );
-  }
-}
+});
 
-class CreateTeam extends Component<{store: Store}> {
-  render() {
-    const store = this.props.store;
-    return (
-      <Button
-        size="small"
-        type="primary"
-        onClick={() => store.createTeam(store.teamName)}
-      >
-        Create a RingCentral Team Messaging team with name &quot;
-        {store.teamName}&quot;
-      </Button>
-    );
-  }
-}
+const CreateTeam = auto((props: {store: Store}) => {
+  const store = props.store;
+  return (
+    <Button
+      size="small"
+      type="primary"
+      onClick={() => store.createTeam(store.teamName)}
+    >
+      Create a RingCentral Team Messaging team with name &quot;
+      {store.teamName}&quot;
+    </Button>
+  );
+});
 
 export default App;

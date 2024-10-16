@@ -1,6 +1,7 @@
 {
   "license": "MIT",
   "scripts": {
+    "lint": "sort-package-json && eslint . --fix",
     "release": "mkdir -p chrome_extension && rm -rf chrome_extension/* && cp content.js manifest.json ./chrome_extension/ && cp -r icons ./chrome_extension/"
   },
   "devDependencies": {
@@ -12,10 +13,12 @@
     "antd": "^5.21.4",
     "eslint-config-tyler": "^0.1.7",
     "localforage": "^1.10.0",
+    "manate": "^0.9.8",
     "parcel": "^2.12.0",
     "process": "^0.11.10",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "sort-package-json": "^2.10.1",
     "typescript": "^5.6.3",
     "yarn-upgrade-all": "^0.7.4"
   }

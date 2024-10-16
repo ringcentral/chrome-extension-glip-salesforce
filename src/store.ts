@@ -1,17 +1,17 @@
+import { autoRun, useProxy } from '@tylerlong/use-proxy';
+import { classToPlain } from 'class-transformer';
 import localforage from 'localforage';
-import {useProxy, autoRun} from '@tylerlong/use-proxy';
-import {classToPlain} from 'class-transformer';
 
-import {Store} from './models';
+import { Store } from './models';
 
 const store = useProxy(new Store());
 
 const autoRunner = autoRun(store, () => {
   if (store.token) {
     localforage.setItem('token', classToPlain(store.token));
-    window.parent.postMessage({type: 'resize', height: 24}, '*');
+    window.parent.postMessage({ type: 'resize', height: 24 }, '*');
   } else {
-    window.parent.postMessage({type: 'resize', height: 300}, '*');
+    window.parent.postMessage({ type: 'resize', height: 300 }, '*');
   }
 });
 autoRunner.start();

@@ -47,10 +47,10 @@ const f = () => {
       .getElementsByTagName('title')[0]
       .text.match(/\d{6,10}/)[0];
     accountName = Array.from(document.getElementsByClassName('labelCol'))
-      .filter(ele => ele.textContent.trim() === 'Account Name')[0]
+      .filter((ele) => ele.textContent.trim() === 'Account Name')[0]
       .nextSibling.textContent.trim();
     subject = Array.from(document.getElementsByClassName('labelCol'))
-      .filter(ele => ele.textContent.trim() === 'Subject')[0]
+      .filter((ele) => ele.textContent.trim() === 'Subject')[0]
       .nextSibling.textContent.trim();
     sectionHeader.parentNode.insertBefore(containerNode, sectionHeader);
   }
@@ -59,11 +59,11 @@ const f = () => {
   urlSearchParams.append('keyword', caseId);
   urlSearchParams.append(
     'teamName',
-    `${accountName}: Case ${caseId} ${subject}`
+    `${accountName}: Case ${caseId} ${subject}`,
   ); // Dolby Labs: Case 09681148 China/India GW solution pricing
   urlSearchParams.append(
     'sfTicketUri',
-    window.location.origin + window.location.pathname
+    window.location.origin + window.location.pathname,
   );
   containerNode.innerHTML = `<iframe id="glip-iframe" frameBorder="0" width="100%" style="height: 24px;" src="https://ringcentral.github.io/chrome-extension-glip-salesforce/?${urlSearchParams.toString()}"></iframe>`;
 };
@@ -71,7 +71,7 @@ const f = () => {
 intervalHandle = setInterval(() => f(), 1000);
 
 console.log('Content script loaded!');
-window.addEventListener('message', event => {
+window.addEventListener('message', (event) => {
   console.log('message received', JSON.stringify(event.data));
   if (event.data.type === 'resize') {
     document.getElementById('glip-iframe').style.height =
