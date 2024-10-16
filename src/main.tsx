@@ -6,7 +6,7 @@ import Rest from '@rc-ex/core/lib/Rest';
 import { Button, Spin } from 'antd';
 import localforage from 'localforage';
 import { auto } from 'manate/react';
-import React, { ReactElement } from 'react';
+import React from 'react';
 
 import Icon from '../icons/icon16.png';
 import { Store } from './models';
@@ -65,7 +65,7 @@ const Login = auto(() => {
     window.addEventListener('message', eventHandler);
   };
   return (
-    <Button type="primary" onClick={() => login()}>
+    <Button type="primary" onClick={() => login()} size="small">
       Login RingCentral Team Messaging
     </Button>
   );
@@ -74,6 +74,9 @@ const Login = auto(() => {
 const Home = auto((props: { store: Store }) => {
   console.log('render Home');
   const store = props.store;
+  if (store.keyword === '') {
+    return 'Please specify a keyword in the URL query parameter';
+  }
   return (
     <>
       {store.existingTeams.length > 0 ? (
