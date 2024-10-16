@@ -65,7 +65,14 @@ const f = () => {
     'sfTicketUri',
     window.location.origin + window.location.pathname
   );
-  containerNode.innerHTML = `<iframe frameBorder="0" width="100%" height="24" src="https://ringcentral.github.io/chrome-extension-glip-salesforce/?${urlSearchParams.toString()}"></iframe>`;
+  containerNode.innerHTML = `<iframe id="glip-iframe" frameBorder="0" width="100%" style="height: 24px;" src="https://ringcentral.github.io/chrome-extension-glip-salesforce/?${urlSearchParams.toString()}"></iframe>`;
 };
 
 intervalHandle = setInterval(() => f(), 1000);
+
+window.addEventListener('message', event => {
+  if (event.data.type === 'resize') {
+    document.getElementById('glip-iframe').style.height =
+      event.data.height + 'px';
+  }
+});

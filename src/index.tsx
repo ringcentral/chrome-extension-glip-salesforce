@@ -12,3 +12,12 @@ ReactDOM.render(<App store={store} />, container);
   await store.load();
   store.ready = true;
 })();
+
+let count = 0;
+setInterval(() => {
+  window.parent.postMessage(
+    {type: 'resize', height: count % 2 === 0 ? 300 : 24},
+    '*'
+  );
+  count += 1;
+}, 10000);
