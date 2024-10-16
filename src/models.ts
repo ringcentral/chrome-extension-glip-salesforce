@@ -18,7 +18,7 @@ if (code !== null && state !== null) {
 const redirectUri = window.location.origin + window.location.pathname;
 
 const rc = new RingCentral({
-  clientId: process.env.RINGCENTRAL_CLIENT_ID,
+  clientId: process.env.RINGCENTRAL_CLIENT_ID_SALESFORCE_GLIP_EXTENSION,
   server: Rest.productionServer,
 });
 export let authorizeUri = '';
@@ -31,33 +31,8 @@ if (code === null) {
   });
   const codeVerifier = authorizeUriExtension.codeVerifier;
   localforage.setItem('code_verifier', codeVerifier);
+  console.log('save codeVerifier', codeVerifier);
 }
-
-// export class Team {
-//   public id: string;
-//   // async open(target: 'app' | 'web') {
-//   //   try {
-//   //     await rc.post(`/restapi/v1.0/glip/teams/${this.id}/join`);
-//   //   } catch (e) {
-//   //     console.log(e);
-//   //     // Join team failed, the team is private. And you are already a member, otherwise you won't see the team at all.
-//   //   } finally {
-//   //     switch (target) {
-//   //       case 'app': {
-//   //         window.window.open(`rcapp://chat/r?groupid=${this.id}`, '_blank');
-//   //         break;
-//   //       }
-//   //       case 'web': {
-//   //         window.window.open(
-//   //           `https://app.ringcentral.com/messages/${this.id}`,
-//   //           '_blank',
-//   //         );
-//   //         break;
-//   //       }
-//   //     }
-//   //   }
-//   // }
-// }
 
 export class Store {
   ready = false;
@@ -69,10 +44,11 @@ export class Store {
 
   async init() {
     if (code !== null) {
+      console.log('code_verifier', await localforage.getItem('code_verifier'));
       this.token = await rc.authorize({
         code,
         redirect_uri: redirectUri,
-        code_verifier: (await localforage.getItem('code_verifier')) as string,
+        code_verifier: await localforage.getItem<string>('code_verifier'),
       });
     }
   }
@@ -141,6 +117,10 @@ export class Store {
       }
     }
     this.existingTeams = Object.assign(this.existingTeams, existingTeams);
+  }
+
+  async joinTeam(teamId: string) {
+    await rc.post(`/restapi/v1.0/glip/teams/${teamId}/join`);
   }
 
   async createTeam(teamName: string) {

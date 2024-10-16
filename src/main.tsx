@@ -1,10 +1,11 @@
 import { ReloadOutlined } from '@ant-design/icons';
+import TMTeamInfo from '@rc-ex/core/lib/definitions/TMTeamInfo';
 import { Button, Spin } from 'antd';
 import { auto } from 'manate/react';
 import React, { ReactElement } from 'react';
 
 import Icon from '../icons/icon16.png';
-import { authorizeUri, Store, Team } from './models';
+import { authorizeUri, Store } from './models';
 
 const App = auto((props: { store: Store }) => {
   const store = props.store;
@@ -24,9 +25,7 @@ const Main = auto((props: { store: Store }) => {
 const Login = auto(() => {
   return (
     <a href={authorizeUri}>
-      <Button size="large" type="primary" block>
-        Login RingCentral Team Messaging
-      </Button>
+      <Button type="primary">Login RingCentral Team Messaging</Button>
     </a>
   );
 });
@@ -51,24 +50,33 @@ const Teams = auto((props: { store: Store }) => {
   const store = props.store;
   const components: (ReactElement | string)[] = [];
   store.existingTeams.forEach((team) => {
-    components.push(<TeamComponent key={team.id} team={team} />);
+    components.push(<TeamComponent key={team.id} store={store} team={team} />);
     components.push('  ');
   });
   components.pop();
   return components;
 });
 
-const TeamComponent = auto((props: { team: Team }) => {
-  const { team } = props;
+const TeamComponent = auto((props: { store: Store; team: TMTeamInfo }) => {
+  const { store, team } = props;
+  const openTeam = async (teamId: string, target: 'app' | 'web') => {
+    await store.joinTeam(teamId);
+    window.open(
+      target === 'app'
+        ? `rcapp://chat/r?groupid=${teamId}`
+        : `https://app.ringcentral.com/messages/${teamId}`,
+      '_blank',
+    );
+  };
   return (
     <>
       {team.name}
       &nbsp;[
-      <a rel="noopener noreferrer" onClick={() => team.open('app')}>
+      <a rel="noopener noreferrer" onClick={() => openTeam(team.id, 'app')}>
         App
       </a>
       ] &nbsp;[
-      <a rel="noopener noreferrer" onClick={() => team.open('web')}>
+      <a rel="noopener noreferrer" onClick={() => openTeam(team.id, 'web')}>
         Web
       </a>
       ]
