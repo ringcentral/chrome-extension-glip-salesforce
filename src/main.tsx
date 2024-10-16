@@ -12,6 +12,7 @@ import Icon from '../icons/icon16.png';
 import { Store } from './models';
 
 const App = auto((props: { store: Store }) => {
+  console.log('render App');
   const store = props.store;
   return (
     <>
@@ -22,11 +23,13 @@ const App = auto((props: { store: Store }) => {
 });
 
 const Main = auto((props: { store: Store }) => {
+  console.log('render Main');
   const store = props.store;
   return !store.token ? <Login /> : <Home store={store} />;
 });
 
 const Login = auto(() => {
+  console.log('render Login');
   let eventHandler: (event: MessageEvent) => void;
   const login = () => {
     const rc = new RingCentral({
@@ -69,6 +72,7 @@ const Login = auto(() => {
 });
 
 const Home = auto((props: { store: Store }) => {
+  console.log('render Home');
   const store = props.store;
   return (
     <>
@@ -85,17 +89,15 @@ const Home = auto((props: { store: Store }) => {
 });
 
 const Teams = auto((props: { store: Store }) => {
+  console.log('render Teams');
   const store = props.store;
-  const components: (ReactElement | string)[] = [];
-  store.existingTeams.forEach((team) => {
-    components.push(<TeamComponent key={team.id} store={store} team={team} />);
-    components.push('  ');
-  });
-  components.pop();
-  return components;
+  return store.existingTeams
+    .slice(0, 10)
+    .map((t) => <TeamComponent key={t.id} store={store} team={t} />);
 });
 
 const TeamComponent = auto((props: { store: Store; team: TMTeamInfo }) => {
+  console.log('render TeamComponent');
   const { store, team } = props;
   const openTeam = async (teamId: string, target: 'app' | 'web') => {
     await store.joinTeam(teamId);
@@ -109,20 +111,19 @@ const TeamComponent = auto((props: { store: Store; team: TMTeamInfo }) => {
   return (
     <>
       {team.name}
-      &nbsp;[
-      <a rel="noopener noreferrer" onClick={() => openTeam(team.id, 'app')}>
+      <Button onClick={() => openTeam(team.id, 'app')} size="small">
         App
-      </a>
-      ] &nbsp;[
-      <a rel="noopener noreferrer" onClick={() => openTeam(team.id, 'web')}>
+      </Button>{' '}
+      <Button onClick={() => openTeam(team.id, 'web')} size="small">
         Web
-      </a>
-      ]
+      </Button>
+      <br />
     </>
   );
 });
 
 const CreateTeam = auto((props: { store: Store }) => {
+  console.log('render CreateTeam');
   const store = props.store;
   return (
     <Button

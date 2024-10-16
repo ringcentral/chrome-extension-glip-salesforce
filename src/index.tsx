@@ -1,15 +1,11 @@
-import React, { StrictMode } from 'react';
+import React from 'react';
 import { createRoot } from 'react-dom/client';
 
 import App from './main';
 import store from './store';
 
 const root = createRoot(document.getElementById('root')!);
-root.render(
-  <StrictMode>
-    <App store={store} />
-  </StrictMode>,
-);
+root.render(<App store={store} />);
 
 (async () => {
   // await store.init();

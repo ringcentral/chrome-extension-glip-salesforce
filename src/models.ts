@@ -1,4 +1,3 @@
-// import AuthorizeUriExtension from '@rc-ex/authorize-uri';
 import RingCentral from '@rc-ex/core';
 import TMTeamInfo from '@rc-ex/core/lib/definitions/TMTeamInfo';
 import TokenInfo from '@rc-ex/core/lib/definitions/TokenInfo';
@@ -10,31 +9,11 @@ import localforage from 'localforage';
 const urlSearchParams = new URLSearchParams(
   new URL(window.location.href).search,
 );
-// const code = urlSearchParams.get('code');
-// const state = urlSearchParams.get('state');
-// if (code !== null && state !== null) {
-//   urlSearchParams = new URLSearchParams(state);
-//   urlSearchParams.set('code', code);
-// }
-
-// const redirectUri = window.location.origin + window.location.pathname;
 
 const rc = new RingCentral({
   clientId: process.env.RINGCENTRAL_CLIENT_ID_SALESFORCE_GLIP_EXTENSION,
   server: Rest.productionServer,
 });
-// export let authorizeUri = '';
-// if (code === null) {
-//   const authorizeUriExtension = new AuthorizeUriExtension();
-//   rc.installExtension(authorizeUriExtension);
-//   authorizeUri = authorizeUriExtension.buildUri({
-//     redirect_uri: redirectUri,
-//     code_challenge_method: 'S256',
-//   });
-//   const codeVerifier = authorizeUriExtension.codeVerifier;
-//   localforage.setItem('code_verifier', codeVerifier);
-//   console.log('save codeVerifier', codeVerifier);
-// }
 
 export class Store {
   ready = false;
@@ -43,17 +22,6 @@ export class Store {
   keyword = urlSearchParams.get('keyword') ?? '';
   teamName = urlSearchParams.get('teamName') ?? '';
   sfTicketUri = urlSearchParams.get('sfTicketUri') ?? '';
-
-  // async init() {
-  //   if (code !== null) {
-  //     console.log('code_verifier', await localforage.getItem('code_verifier'));
-  //     this.token = await rc.authorize({
-  //       code,
-  //       redirect_uri: redirectUri,
-  //       code_verifier: await localforage.getItem<string>('code_verifier'),
-  //     });
-  //   }
-  // }
 
   async reload() {
     // remove all data except token
@@ -64,8 +32,10 @@ export class Store {
   }
 
   async load() {
-    const token = await localforage.getItem<TokenInfo>('token');
+    console.log(await localforage.getItem('token'));
+    const token = (await localforage.getItem('token')) as TokenInfo;
     if (token === null) {
+      console.log('no token found');
       return;
     }
     rc.token = token;
@@ -110,7 +80,8 @@ export class Store {
       await localforage.setItem('teams', teams);
     }
     const existingTeams = [];
-    if (this.keyword !== null) {
+    if (this.keyword !== '') {
+      console.log('keyword', this.keyword);
       const regex = new RegExp(`\\b${this.keyword}\\b`, 'i');
       for (const key of Object.keys(teams)) {
         if (regex.test(teams[key].name ?? '')) {
@@ -118,7 +89,8 @@ export class Store {
         }
       }
     }
-    this.existingTeams = Object.assign(this.existingTeams, existingTeams);
+    this.existingTeams = existingTeams;
+    console.log(this.existingTeams);
   }
 
   async joinTeam(teamId: string) {
