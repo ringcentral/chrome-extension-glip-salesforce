@@ -15,9 +15,8 @@ ReactDOM.render(<App store={store} />, container);
 
 let count = 0;
 setInterval(() => {
-  window.parent.postMessage(
-    {type: 'resize', height: count % 2 === 0 ? 300 : 24},
-    '*'
-  );
+  const message = {type: 'resize', height: count % 2 === 0 ? 300 : 24};
+  window.parent.postMessage(message, '*');
+  console.log('postMessage', JSON.stringify(message));
   count += 1;
-}, 10000);
+}, 3000);
