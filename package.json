@@ -1,44 +1,22 @@
 {
   "license": "MIT",
-  "engines": {
-    "node": ">=14.x"
-  },
   "scripts": {
-    "serve": "webpack serve --progress --mode development --open",
-    "build": "webpack --progress --mode production",
     "release": "mkdir -p chrome_extension && rm -rf chrome_extension/* && cp content.js manifest.json ./chrome_extension/ && cp -r icons ./chrome_extension/"
   },
-  "dependencies": {
+  "devDependencies": {
     "@ant-design/icons": "^5.5.1",
     "@rc-ex/authorize-uri": "^1.1.18",
     "@rc-ex/core": "^1.4.2",
-    "@tylerlong/use-proxy": "^1.3.1",
-    "antd": "^5.21.4",
-    "class-transformer": "^0.5.1",
-    "localforage": "^1.10.0",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
-  },
-  "devDependencies": {
     "@types/node": "^22.7.5",
     "@types/react-dom": "^18.3.1",
-    "buffer": "^6.0.3",
-    "crypto-browserify": "^3.12.0",
-    "css-loader": "^7.1.2",
-    "dotenv-override-true": "^6.2.2",
-    "eslint-plugin-react": "^7.37.1",
-    "file-loader": "^6.2.0",
-    "gts": "^6.0.0",
-    "html-webpack-plugin": "^5.6.0",
+    "antd": "^5.21.4",
+    "eslint-config-tyler": "^0.1.7",
+    "localforage": "^1.10.0",
+    "parcel": "^2.12.0",
     "process": "^0.11.10",
-    "stream-browserify": "^3.0.0",
-    "style-loader": "^4.0.0",
-    "ts-loader": "^9.5.1",
-    "ts-node": "^10.9.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "typescript": "^5.6.3",
-    "webpack": "^5.95.0",
-    "webpack-cli": "^5.1.4",
-    "webpack-dev-server": "^5.1.0",
     "yarn-upgrade-all": "^0.7.4"
   }
 }
