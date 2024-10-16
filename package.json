@@ -1,8 +1,10 @@
 {
   "license": "MIT",
   "scripts": {
+    "build": "rm -rf .parcel-cache docs && parcel src/index.html --dist-dir docs -public-url ./",
     "lint": "sort-package-json && eslint . --fix",
-    "release": "mkdir -p chrome_extension && rm -rf chrome_extension/* && cp content.js manifest.json ./chrome_extension/ && cp -r icons ./chrome_extension/"
+    "release": "mkdir -p chrome_extension && rm -rf chrome_extension/* && cp content.js manifest.json ./chrome_extension/ && cp -r icons ./chrome_extension/",
+    "serve": "rm -rf .parcel-cache docs && parcel src/index.html --dist-dir docs"
   },
   "devDependencies": {
     "@ant-design/icons": "^5.5.1",
@@ -11,7 +13,10 @@
     "@types/node": "^22.7.5",
     "@types/react-dom": "^18.3.1",
     "antd": "^5.21.4",
+    "buffer": "^6.0.3",
+    "crypto-browserify": "^3.12.0",
     "eslint-config-tyler": "^0.1.7",
+    "events": "^3.3.0",
     "localforage": "^1.10.0",
     "manate": "^0.9.8",
     "parcel": "^2.12.0",
@@ -19,7 +24,10 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "sort-package-json": "^2.10.1",
+    "stream-browserify": "^3.0.0",
+    "string_decoder": "^1.3.0",
     "typescript": "^5.6.3",
+    "vm-browserify": "^1.1.2",
     "yarn-upgrade-all": "^0.7.4"
   }
 }
