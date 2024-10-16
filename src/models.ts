@@ -1,4 +1,4 @@
-import AuthorizeUriExtension from '@rc-ex/authorize-uri';
+// import AuthorizeUriExtension from '@rc-ex/authorize-uri';
 import RingCentral from '@rc-ex/core';
 import TMTeamInfo from '@rc-ex/core/lib/definitions/TMTeamInfo';
 import TokenInfo from '@rc-ex/core/lib/definitions/TokenInfo';
@@ -7,32 +7,34 @@ import RestException from '@rc-ex/core/lib/RestException';
 import { message } from 'antd';
 import localforage from 'localforage';
 
-let urlSearchParams = new URLSearchParams(new URL(window.location.href).search);
-const code = urlSearchParams.get('code');
-const state = urlSearchParams.get('state');
-if (code !== null && state !== null) {
-  urlSearchParams = new URLSearchParams(state);
-  urlSearchParams.set('code', code);
-}
+const urlSearchParams = new URLSearchParams(
+  new URL(window.location.href).search,
+);
+// const code = urlSearchParams.get('code');
+// const state = urlSearchParams.get('state');
+// if (code !== null && state !== null) {
+//   urlSearchParams = new URLSearchParams(state);
+//   urlSearchParams.set('code', code);
+// }
 
-const redirectUri = window.location.origin + window.location.pathname;
+// const redirectUri = window.location.origin + window.location.pathname;
 
 const rc = new RingCentral({
   clientId: process.env.RINGCENTRAL_CLIENT_ID_SALESFORCE_GLIP_EXTENSION,
   server: Rest.productionServer,
 });
-export let authorizeUri = '';
-if (code === null) {
-  const authorizeUriExtension = new AuthorizeUriExtension();
-  rc.installExtension(authorizeUriExtension);
-  authorizeUri = authorizeUriExtension.buildUri({
-    redirect_uri: redirectUri,
-    code_challenge_method: 'S256',
-  });
-  const codeVerifier = authorizeUriExtension.codeVerifier;
-  localforage.setItem('code_verifier', codeVerifier);
-  console.log('save codeVerifier', codeVerifier);
-}
+// export let authorizeUri = '';
+// if (code === null) {
+//   const authorizeUriExtension = new AuthorizeUriExtension();
+//   rc.installExtension(authorizeUriExtension);
+//   authorizeUri = authorizeUriExtension.buildUri({
+//     redirect_uri: redirectUri,
+//     code_challenge_method: 'S256',
+//   });
+//   const codeVerifier = authorizeUriExtension.codeVerifier;
+//   localforage.setItem('code_verifier', codeVerifier);
+//   console.log('save codeVerifier', codeVerifier);
+// }
 
 export class Store {
   ready = false;
@@ -42,16 +44,16 @@ export class Store {
   teamName = urlSearchParams.get('teamName') ?? '';
   sfTicketUri = urlSearchParams.get('sfTicketUri') ?? '';
 
-  async init() {
-    if (code !== null) {
-      console.log('code_verifier', await localforage.getItem('code_verifier'));
-      this.token = await rc.authorize({
-        code,
-        redirect_uri: redirectUri,
-        code_verifier: await localforage.getItem<string>('code_verifier'),
-      });
-    }
-  }
+  // async init() {
+  //   if (code !== null) {
+  //     console.log('code_verifier', await localforage.getItem('code_verifier'));
+  //     this.token = await rc.authorize({
+  //       code,
+  //       redirect_uri: redirectUri,
+  //       code_verifier: await localforage.getItem<string>('code_verifier'),
+  //     });
+  //   }
+  // }
 
   async reload() {
     // remove all data except token

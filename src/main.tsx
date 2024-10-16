@@ -1,11 +1,15 @@
 import { ReloadOutlined } from '@ant-design/icons';
+import AuthorizeUriExtension from '@rc-ex/authorize-uri';
+import RingCentral from '@rc-ex/core';
 import TMTeamInfo from '@rc-ex/core/lib/definitions/TMTeamInfo';
+import Rest from '@rc-ex/core/lib/Rest';
 import { Button, Spin } from 'antd';
+import localforage from 'localforage';
 import { auto } from 'manate/react';
 import React, { ReactElement } from 'react';
 
 import Icon from '../icons/icon16.png';
-import { authorizeUri, Store } from './models';
+import { Store } from './models';
 
 const App = auto((props: { store: Store }) => {
   const store = props.store;
@@ -23,10 +27,49 @@ const Main = auto((props: { store: Store }) => {
 });
 
 const Login = auto(() => {
+  const login = () => {
+    const rc = new RingCentral({
+      clientId: process.env.RINGCENTRAL_CLIENT_ID_SALESFORCE_GLIP_EXTENSION,
+      server: Rest.productionServer,
+    });
+    const authorizeUriExtension = new AuthorizeUriExtension();
+    rc.installExtension(authorizeUriExtension);
+    const redirectUri = window.location.origin + window.location.pathname;
+    const authorizeUri = authorizeUriExtension.buildUri({
+      redirect_uri: redirectUri,
+      code_challenge_method: 'S256',
+    });
+    const codeVerifier = authorizeUriExtension.codeVerifier;
+    const popupWindow = window.open(
+      authorizeUri,
+      'LoginPopup',
+      'width=600,height=600',
+    );
+    const handle = setInterval(async () => {
+      if (popupWindow.closed) {
+        clearInterval(handle);
+        return;
+      }
+      // Parse the URL and check if it contains the "code" parameter
+      const urlParams = new URLSearchParams(popupWindow.location.search);
+      const code = urlParams.get('code');
+      if (code) {
+        clearInterval(handle);
+        popupWindow.close();
+        const token = await rc.authorize({
+          code,
+          redirect_uri: redirectUri,
+          code_verifier: codeVerifier,
+        });
+        await localforage.setItem('token', token);
+        window.location.reload();
+      }
+    }, 100);
+  };
   return (
-    <a href={authorizeUri}>
-      <Button type="primary">Login RingCentral Team Messaging</Button>
-    </a>
+    <Button type="primary" onClick={() => login()}>
+      Login RingCentral Team Messaging
+    </Button>
   );
 });
 

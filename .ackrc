@@ -1,3 +1,4 @@
+--ignore-dir=.parcel-cache
 --ignore-dir=docs
 --ignore-dir=build
 --ignore-dir=chrome_extension
