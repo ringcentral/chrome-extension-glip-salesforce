@@ -29,7 +29,7 @@ class Main extends Component<{store: Store}> {
 class Login extends Component<{store: Store}> {
   render() {
     return (
-      <a href={authorizeUri} target="_parent">
+      <a href={authorizeUri}>
         <Button size="large" type="primary" block>
           Login RingCentral Team Messaging
         </Button>
