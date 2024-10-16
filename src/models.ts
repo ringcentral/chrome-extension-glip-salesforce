@@ -1,10 +1,10 @@
 import AuthorizeUriExtension from '@rc-ex/authorize-uri';
 import RingCentral from '@rc-ex/core';
-import { GlipTeamInfo, TokenInfo } from '@rc-ex/core/lib/definitions';
+import TMTeamInfo from '@rc-ex/core/lib/definitions/TMTeamInfo';
+import TokenInfo from '@rc-ex/core/lib/definitions/TokenInfo';
 import Rest from '@rc-ex/core/lib/Rest';
 import RestException from '@rc-ex/core/lib/RestException';
 import { message } from 'antd';
-import { plainToClass } from 'class-transformer';
 import localforage from 'localforage';
 
 let urlSearchParams = new URLSearchParams(new URL(window.location.href).search);
@@ -33,35 +33,36 @@ if (code === null) {
   localforage.setItem('code_verifier', codeVerifier);
 }
 
-export class Team extends GlipTeamInfo {
-  async open(target: 'app' | 'web') {
-    try {
-      await rc.post(`/restapi/v1.0/glip/teams/${this.id}/join`);
-    } catch (e) {
-      console.log(e);
-      // Join team failed, the team is private. And you are already a member, otherwise you won't see the team at all.
-    } finally {
-      switch (target) {
-        case 'app': {
-          window.window.open(`rcapp://chat/r?groupid=${this.id}`, '_blank');
-          break;
-        }
-        case 'web': {
-          window.window.open(
-            `https://app.ringcentral.com/messages/${this.id}`,
-            '_blank',
-          );
-          break;
-        }
-      }
-    }
-  }
-}
+// export class Team {
+//   public id: string;
+//   // async open(target: 'app' | 'web') {
+//   //   try {
+//   //     await rc.post(`/restapi/v1.0/glip/teams/${this.id}/join`);
+//   //   } catch (e) {
+//   //     console.log(e);
+//   //     // Join team failed, the team is private. And you are already a member, otherwise you won't see the team at all.
+//   //   } finally {
+//   //     switch (target) {
+//   //       case 'app': {
+//   //         window.window.open(`rcapp://chat/r?groupid=${this.id}`, '_blank');
+//   //         break;
+//   //       }
+//   //       case 'web': {
+//   //         window.window.open(
+//   //           `https://app.ringcentral.com/messages/${this.id}`,
+//   //           '_blank',
+//   //         );
+//   //         break;
+//   //       }
+//   //     }
+//   //   }
+//   // }
+// }
 
 export class Store {
   ready = false;
   token?: TokenInfo = undefined;
-  existingTeams: Team[] = [];
+  existingTeams: TMTeamInfo[] = [];
   keyword = urlSearchParams.get('keyword') ?? '';
   teamName = urlSearchParams.get('teamName') ?? '';
   sfTicketUri = urlSearchParams.get('sfTicketUri') ?? '';
@@ -107,28 +108,25 @@ export class Store {
       await localforage.clear();
       window.location.reload();
     }
-    const teams: { [key: string]: Team } =
+    const teams: { [key: string]: TMTeamInfo } =
       (await localforage.getItem('teams')) || {};
-    const prevPageToken = await localforage.getItem('prevPageToken');
-    let r = await rc.get('/restapi/v1.0/glip/teams', {
+    const prevPageToken = await localforage.getItem<string>('prevPageToken');
+    let r = await rc.teamMessaging().v1().teams().list({
       recordCount: 250,
       pageToken: prevPageToken,
     });
-    console.log(r.data);
-    for (const team of r.data.records) {
+    console.log(r);
+    for (const team of r.records) {
       teams[team.id!] = team;
     }
-    while (r.data.navigation.prevPageToken) {
-      await localforage.setItem(
-        'prevPageToken',
-        r.data.navigation.prevPageToken,
-      );
-      r = await rc.get('/restapi/v1.0/glip/teams', {
+    while (r.navigation.prevPageToken) {
+      await localforage.setItem('prevPageToken', r.navigation.prevPageToken);
+      r = await rc.teamMessaging().v1().teams().list({
         recordCount: 250,
-        pageToken: r.data.navigation.prevPageToken,
+        pageToken: r.navigation.prevPageToken,
       });
-      console.log(r.data);
-      for (const team of r.data.records) {
+      console.log(r);
+      for (const team of r.records) {
         teams[team.id] = team;
       }
       await localforage.setItem('teams', teams);
@@ -142,16 +140,16 @@ export class Store {
         }
       }
     }
-    this.existingTeams = plainToClass(Team, existingTeams);
+    this.existingTeams = Object.assign(this.existingTeams, existingTeams);
   }
 
   async createTeam(teamName: string) {
     try {
-      const r = await rc.post('/restapi/v1.0/glip/teams', {
+      const r = (await rc.post('/restapi/v1.0/glip/teams', {
         public: true,
         name: teamName,
         description: teamName,
-      });
+      })) as { data: TMTeamInfo };
       await rc.post(`/restapi/v1.0/glip/chats/${r.data.id}/posts`, {
         text: `This Team is created for [Salesforce ticket #${this.keyword}](${this.sfTicketUri}) by [RingCentral Team Messaging Salesforce Chrome extension](https://chrome.google.com/webstore/detail/glip-salesforce/gcmccmiceedebolmgjddhklghkaejbei).`,
       });

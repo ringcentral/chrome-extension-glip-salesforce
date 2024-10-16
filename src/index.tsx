@@ -10,6 +10,7 @@ root.render(
     <App store={store} />
   </StrictMode>,
 );
+
 (async () => {
   await store.init();
   await store.load();

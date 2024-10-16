@@ -1,12 +1,12 @@
 import { ReloadOutlined } from '@ant-design/icons';
 import { Button, Spin } from 'antd';
+import { auto } from 'manate/react';
 import React, { ReactElement } from 'react';
-import {auto} from 'manate/react';
 
 import Icon from '../icons/icon16.png';
 import { authorizeUri, Store, Team } from './models';
 
-const App = auto((props: {store: Store}) => {
+const App = auto((props: { store: Store }) => {
   const store = props.store;
   return (
     <>
@@ -16,11 +16,10 @@ const App = auto((props: {store: Store}) => {
   );
 });
 
-const Main = auto((props: {store: Store}) => {
+const Main = auto((props: { store: Store }) => {
   const store = props.store;
   return !store.token ? <Login /> : <Home store={store} />;
 });
-
 
 const Login = auto(() => {
   return (
@@ -32,52 +31,52 @@ const Login = auto(() => {
   );
 });
 
-const Home = auto((props: {store: Store}) => {
+const Home = auto((props: { store: Store }) => {
   const store = props.store;
-    return (
-      <>
-        {store.existingTeams.length > 0 ? (
-          <Teams store={store} />
-        ) : (
-          <CreateTeam store={store} />
-        )}
-        <a onClick={() => store.reload()}>
-          <ReloadOutlined id="reload-icon" />
-        </a>
-      </>
-    );
+  return (
+    <>
+      {store.existingTeams.length > 0 ? (
+        <Teams store={store} />
+      ) : (
+        <CreateTeam store={store} />
+      )}
+      <a onClick={() => store.reload()}>
+        <ReloadOutlined id="reload-icon" />
+      </a>
+    </>
+  );
 });
 
-const Teams = auto((props: {store: Store}) => {
+const Teams = auto((props: { store: Store }) => {
   const store = props.store;
-    const components: (ReactElement | string)[] = [];
-    store.existingTeams.forEach((team) => {
-      components.push(<TeamComponent key={team.id} team={team} />);
-      components.push('  ');
-    });
-    components.pop();
-    return components;
+  const components: (ReactElement | string)[] = [];
+  store.existingTeams.forEach((team) => {
+    components.push(<TeamComponent key={team.id} team={team} />);
+    components.push('  ');
+  });
+  components.pop();
+  return components;
 });
 
-const TeamComponent = auto((props: {team: Team}) => {
+const TeamComponent = auto((props: { team: Team }) => {
   const { team } = props;
-    return (
-      <>
-        {team.name}
-        &nbsp;[
-        <a rel="noopener noreferrer" onClick={() => team.open('app')}>
-          App
-        </a>
-        ] &nbsp;[
-        <a rel="noopener noreferrer" onClick={() => team.open('web')}>
-          Web
-        </a>
-        ]
-      </>
-    );
+  return (
+    <>
+      {team.name}
+      &nbsp;[
+      <a rel="noopener noreferrer" onClick={() => team.open('app')}>
+        App
+      </a>
+      ] &nbsp;[
+      <a rel="noopener noreferrer" onClick={() => team.open('web')}>
+        Web
+      </a>
+      ]
+    </>
+  );
 });
 
-const CreateTeam = auto((props: {store: Store}) => {
+const CreateTeam = auto((props: { store: Store }) => {
   const store = props.store;
   return (
     <Button
