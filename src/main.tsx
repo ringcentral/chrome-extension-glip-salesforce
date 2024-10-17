@@ -113,11 +113,19 @@ const TeamComponent = auto((props: { store: Store; team: TMTeamInfo }) => {
   };
   return (
     <>
-      {team.name}
-      <Button onClick={() => openTeam(team.id, 'app')} size="small">
+      {team.name}{' '}
+      <Button
+        onClick={() => openTeam(team.id, 'app')}
+        size="small"
+        type="primary"
+      >
         App
       </Button>{' '}
-      <Button onClick={() => openTeam(team.id, 'web')} size="small">
+      <Button
+        onClick={() => openTeam(team.id, 'web')}
+        size="small"
+        type="primary"
+      >
         Web
       </Button>
       <br />
