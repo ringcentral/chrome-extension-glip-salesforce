@@ -1,4 +1,4 @@
-@import "../node_modules/antd/dist/reset.css";
+@import '../node_modules/antd/dist/reset.css';
 
 #glip-icon {
   margin: 0 8px;
@@ -9,4 +9,8 @@
   margin-top: 3px;
   margin-right: 8px;
   float: right;
+}
+
+body {
+  background-color: white;
 }
