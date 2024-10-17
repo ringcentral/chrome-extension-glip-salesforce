@@ -69,12 +69,3 @@ const f = () => {
 };
 
 intervalHandle = setInterval(() => f(), 1000);
-
-console.log('Content script loaded!');
-window.addEventListener('message', (event) => {
-  console.log('message received', JSON.stringify(event.data));
-  if (event.data.type === 'resize') {
-    document.getElementById('glip-iframe').style.height =
-      event.data.height + 'px';
-  }
-});

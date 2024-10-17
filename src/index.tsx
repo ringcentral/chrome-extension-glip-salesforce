@@ -19,7 +19,6 @@ root.render(
 );
 
 (async () => {
-  // await store.init();
   await store.load();
   store.ready = true;
 })();

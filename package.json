@@ -10,7 +10,7 @@
     "@ant-design/icons": "^5.5.1",
     "@rc-ex/authorize-uri": "^1.1.18",
     "@rc-ex/core": "^1.4.2",
-    "@types/node": "^22.7.5",
+    "@types/node": "^22.7.6",
     "@types/react-dom": "^18.3.1",
     "antd": "^5.21.4",
     "buffer": "^6.0.3",

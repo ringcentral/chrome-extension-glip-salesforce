@@ -7,7 +7,6 @@ const store = manage(new Store());
 
 const autoRunner = autoRun(store, () => {
   if (store.token) {
-    console.log('save token');
     localforage.setItem('token', Object.assign({}, store.token));
   }
 });

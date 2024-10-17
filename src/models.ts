@@ -32,7 +32,6 @@ export class Store {
   }
 
   async load() {
-    console.log(await localforage.getItem('token'));
     const token = (await localforage.getItem('token')) as TokenInfo;
     if (token === null) {
       console.log('no token found');
@@ -81,7 +80,6 @@ export class Store {
     }
     const existingTeams = [];
     if (this.keyword !== '') {
-      console.log('keyword', this.keyword);
       const regex = new RegExp(`\\b${this.keyword}\\b`, 'i');
       for (const key of Object.keys(teams)) {
         if (regex.test(teams[key].name ?? '')) {
@@ -90,7 +88,6 @@ export class Store {
       }
     }
     this.existingTeams = existingTeams;
-    console.log(this.existingTeams);
   }
 
   async joinTeam(teamId: string) {
